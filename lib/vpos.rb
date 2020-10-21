@@ -6,28 +6,27 @@ module Vpos
   class Error < StandardError; end
   include HTTParty
   base_uri "http://178.79.144.59:4000/api/v1"
-  debug_output $stdout
 
   def self.new_payment(customer, amount)
     content = set_headers
     content[:body] = {type:"payment", pos_id: pos_id, mobile: customer, amount: amount, callback_url: payment_callback_url}.to_json
-    post("/transactions", content).parsed_response
+    post("/transactions", content)
   end
 
   def self.new_refund(transaction_id)
     content = set_headers
     content[:body] = {type: "refund", parent_transaction_id: transaction_id, supervisor_card: supervisor_card, callback_url: refund_callback_url}.to_json
-    post("/transactions", content).parsed_response
+    post("/transactions", content)
   end
 
   def self.get_transaction(transaction_id)
     content = set_headers
-    get("/transactions/#{transaction_id}", content).parsed_response
+    get("/transactions/#{transaction_id}", content)
   end
 
   def self.get_transactions
     content = set_headers
-    get("/transactions", content).parsed_response
+    get("/transactions", content)
   end
 
   private
