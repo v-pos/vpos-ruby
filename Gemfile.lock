@@ -2,8 +2,8 @@ PATH
   remote: .
   specs:
     vpos (0.1.0)
-      httparty
-      rspec
+      httparty (~> 0.18.1)
+      rspec (~> 3.9.0)
 
 GEM
   remote: https://rubygems.org/

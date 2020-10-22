@@ -7,15 +7,15 @@ module Vpos
   include HTTParty
   base_uri "http://178.79.144.59:4000/api/v1"
 
-  def self.new_payment(customer, amount)
+  def self.new_payment(customer, amount, pos_id: default_pos_id, callback_url: default_payment_callback_url)
     content = set_headers
-    content[:body] = {type:"payment", pos_id: pos_id, mobile: customer, amount: amount, callback_url: payment_callback_url}.to_json
+    content[:body] = {type:"payment", pos_id: pos_id, mobile: customer, amount: amount, callback_url: callback_url}.to_json
     post("/transactions", content)
   end
 
-  def self.new_refund(transaction_id)
+  def self.new_refund(transaction_id, supervisor_card: default_supervisor_card, callback_url: default_refund_callback_url)
     content = set_headers
-    content[:body] = {type: "refund", parent_transaction_id: transaction_id, supervisor_card: supervisor_card, callback_url: refund_callback_url}.to_json
+    content[:body] = {type: "refund", parent_transaction_id: transaction_id, supervisor_card: supervisor_card, callback_url: callback_url}.to_json
     post("/transactions", content)
   end
 
@@ -32,17 +32,17 @@ module Vpos
   private
     def self.set_headers
       content = {}
-      headers = {'Content-Type' => "application/json", 'Accept' => "application/json", 'Authorization' => set_token, 'X-Idempotency-Key' => SecureRandom.uuid}
+      headers = {'Content-Type' => "application/json", 'Accept' => "application/json", 'Authorization' => set_token, 'Idempotency-Key' => SecureRandom.uuid}
       content[:headers] = headers
       return content
     end
 
-    def self.pos_id
+    def self.default_pos_id
       pos_id = ENV["GPO_POS_ID"]
       return "#{pos_id}".to_i
     end
 
-    def self.supervisor_card
+    def self.default_supervisor_card
       supervisor_card = ENV["GPO_SUPERVISOR_CARD"]
       return "#{supervisor_card}"
     end
@@ -52,11 +52,13 @@ module Vpos
       return "Bearer #{token}"
     end
 
-    def self.payment_callback_url
-      return "http://my_app_hostname/confirmation"
+    def self.default_payment_callback_url
+      url = ENV["PAYMENT_CALLBACK_URL"]
+      return url
     end
 
-    def self.refund_callback_url
-      return "http://my_app_hostname/confirmation"
+    def self.default_refund_callback_url
+      url = ENV["REFUND_CALLBACK_URL"]
+      return url
     end
 end
