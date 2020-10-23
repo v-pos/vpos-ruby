@@ -29,6 +29,15 @@ module Vpos
     get("/transactions", content)
   end
 
+  def self.get_request(location)
+    content = set_headers
+    if location == nil
+      get("/references/invalid", content)
+    else
+      get(location.gsub("/api/v1", ""), content)
+    end
+  end
+
   private
     def self.set_headers
       content = {}
