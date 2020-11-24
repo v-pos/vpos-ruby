@@ -5,37 +5,43 @@ require "securerandom"
 module Vpos
   class Error < StandardError; end
   include HTTParty
-  base_uri "http://178.79.144.59:4000/api/v1"
+  follow_redirects false
 
   def self.new_payment(customer, amount, pos_id: default_pos_id, callback_url: default_payment_callback_url)
     content = set_headers
     content[:body] = {type:"payment", pos_id: pos_id, mobile: customer, amount: amount, callback_url: callback_url}.to_json
-    post("/transactions", content)
+    post("#{host}/transactions", content)
   end
 
   def self.new_refund(transaction_id, supervisor_card: default_supervisor_card, callback_url: default_refund_callback_url)
     content = set_headers
     content[:body] = {type: "refund", parent_transaction_id: transaction_id, supervisor_card: supervisor_card, callback_url: callback_url}.to_json
-    post("/transactions", content)
+    post("#{host}/transactions", content)
   end
 
   def self.get_transaction(transaction_id)
-    content = set_headers
-    get("/transactions/#{transaction_id}", content)
+    get("#{host}/transactions/#{transaction_id}", set_headers)
   end
 
   def self.get_transactions
-    content = set_headers
-    get("/transactions", content)
+    get("#{host}/transactions", set_headers)
   end
 
-  def self.get_request(location)
-    content = set_headers
+  def self.get_request_id(request)
+    location = request.headers["location"]
     if location == nil
-      get("/references/invalid", content)
+      get("#{host}/references/invalid", set_headers)
     else
-      get(location.gsub("/api/v1", ""), content)
+      if request.response.code == "200"
+        location.gsub("/api/v1/requests/", "")
+      else
+        location.gsub("/api/v1/transactions/", "")
+      end
     end
+  end
+
+  def self.get_request(transaction_id)
+    get("#{host}/requests/#{transaction_id}", set_headers)
   end
 
   private
@@ -69,5 +75,13 @@ module Vpos
     def self.default_refund_callback_url
       url = ENV["REFUND_CALLBACK_URL"]
       return url
+    end
+
+    def self.host
+      if ENV["VPOS_ENVIRONMENT"] == "prd"
+        return "https://api.vpos.ao/api/v1"
+      else
+        return "https://sandbox.vpos.ao/api/v1"
+      end
     end
 end
