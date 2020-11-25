@@ -28,11 +28,11 @@ module Vpos
   end
 
   def self.get_request_id(request)
-    location = request.headers["location"]
-    if location == nil
+    if request.headers["location"].nil? 
       get("#{host}/references/invalid", set_headers)
     else
-      if request.response.code == "200"
+      location = request.headers["location"]
+      if request.response.code == "202"
         location.gsub("/api/v1/requests/", "")
       else
         location.gsub("/api/v1/transactions/", "")
