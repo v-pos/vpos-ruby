@@ -40,8 +40,9 @@ describe "vPOS" do
     end
     context "when is valid" do
       it "should get request" do
-        payment = Vpos.new_payment("925888553", "1250.34")
-        request = Vpos.get_request(payment.headers["Location"])
+        payment = Vpos.new_payment("925721924", "1250.34")
+        request_id = Vpos.get_request_id(payment)
+        request = Vpos.get_request(request_id)
         expect(request).to be_an(HTTParty::Response)
         expect(request.response.code).to eq("200")
       end
@@ -80,22 +81,21 @@ describe "vPOS" do
   context "Refunds" do
     context "when is not valid" do
       it "should not create new refund transaction if parent transaction does not exist" do
-        pending("Will be tested when mock server is ready")
         refund = Vpos.new_refund("9kOmKgxWQuCXpUzUB6")
-        expect(refund).to be_an(HTTParty::Response)
-        expect(refund.parsed_response["errors"]["parent_transaction_id"]).to eq(["is invalid"])
-        expect(refund.response.code).to eq("400")
-        expect(refund.parsed_response).to be_an(Hash)
+        expect(refund.response.code).to eq("202")
+        request_id = Vpos.get_request_id(refund)
+        request = Vpos.get_transaction(request_id)
+        expect(request.parsed_response["status"]).to eq("rejected")
+        expect(request.parsed_response["status_reason"]).to eq(1003)
+        expect(request.parsed_response).to be_an(Hash)
       end
     end
 
     context "when is valid" do
       it "should create new refund transaction" do
-        pending("Will be tested when mock server is ready")
-        refund = Vpos.new_refund(@request.parsed_response["id"])
+        refund = Vpos.new_refund("9kOmKgxWQuCXpUzUB6c")
         expect(refund).to be_an(HTTParty::Response)
         expect(refund.response.code).to eq("202")
-        expect(refund.parsed_response).to be_an(Hash)
       end
     end
   end
