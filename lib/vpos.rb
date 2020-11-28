@@ -10,38 +10,62 @@ module Vpos
   def self.new_payment(customer, amount, pos_id: default_pos_id, callback_url: default_payment_callback_url)
     content = set_headers
     content[:body] = {type:"payment", pos_id: pos_id, mobile: customer, amount: amount, callback_url: callback_url}.to_json
-    post("#{host}/transactions", content)
+    request = post("#{host}/transactions", content)
+    if request.response.code == "202"
+      return {status: request.response.code, message: request.response.message, location: request.headers["location"]}
+    else
+      return {status: request.response.code, message: request.response.message, details: request.parsed_response["errors"]}
+    end
   end
 
   def self.new_refund(transaction_id, supervisor_card: default_supervisor_card, callback_url: default_refund_callback_url)
     content = set_headers
     content[:body] = {type: "refund", parent_transaction_id: transaction_id, supervisor_card: supervisor_card, callback_url: callback_url}.to_json
-    post("#{host}/transactions", content)
+    request = post("#{host}/transactions", content)
+    if request.response.code == "202"
+      return {status: request.response.code, message: request.response.message, location: request.headers["location"]}
+    else
+      return {status: request.response.code, message: request.response.message, details: request.parsed_response["errors"]}
+    end
   end
 
   def self.get_transaction(transaction_id)
-    get("#{host}/transactions/#{transaction_id}", set_headers)
+    request = get("#{host}/transactions/#{transaction_id}", set_headers)
+    if request.response.code == "200"
+      return {status: request.response.code, message: request.response.message, data: request.parsed_response}
+    else
+      return {status: request.response.code, message: request.response.message, details: request.parsed_response["errors"]}
+    end
   end
 
   def self.get_transactions
-    get("#{host}/transactions", set_headers)
+    request = get("#{host}/transactions", set_headers)
+    if request.response.code == "200"
+      return {status: request.response.code, message: request.response.message, data: request.parsed_response}
+    else
+      return {status: request.response.code, message: request.response.message, details: request.parsed_response["errors"]}
+    end
   end
 
   def self.get_request_id(request)
-    if request.headers["location"].nil? 
+    if request[:location].nil?
       get("#{host}/references/invalid", set_headers)
     else
-      location = request.headers["location"]
-      if request.response.code == "202"
-        location.gsub("/api/v1/requests/", "")
+      if request[:status] == "202"
+        request[:location].gsub("/api/v1/requests/", "")
       else
-        location.gsub("/api/v1/transactions/", "")
+        request[:location].gsub("/api/v1/transactions/", "")
       end
     end
   end
 
-  def self.get_request(transaction_id)
-    get("#{host}/requests/#{transaction_id}", set_headers)
+  def self.get_request(request_id)
+    request = get("#{host}/requests/#{request_id}", set_headers)
+    if request.response.code == "200" || request.response.code == "303"
+      return {status: request.response.code, message: request.response.message, data: request.parsed_response}
+    else
+      return {status: request.response.code, message: request.response.message, details: request.parsed_response["errors"]}
+    end
   end
 
   private
