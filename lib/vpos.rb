@@ -11,47 +11,31 @@ module Vpos
     content = set_headers
     content[:body] = {type:"payment", pos_id: pos_id, mobile: customer, amount: amount, callback_url: callback_url}.to_json
     request = post("#{host}/transactions", content)
-    if request.response.code == "202"
-      return {status: request.response.code, message: request.response.message, location: request.headers["location"]}
-    else
-      return {status: request.response.code, message: request.response.message, details: request.parsed_response["errors"]}
-    end
+    return_vpos_object(request)
   end
 
   def self.new_refund(transaction_id, supervisor_card: default_supervisor_card, callback_url: default_refund_callback_url)
     content = set_headers
     content[:body] = {type: "refund", parent_transaction_id: transaction_id, supervisor_card: supervisor_card, callback_url: callback_url}.to_json
     request = post("#{host}/transactions", content)
-    if request.response.code == "202"
-      return {status: request.response.code, message: request.response.message, location: request.headers["location"]}
-    else
-      return {status: request.response.code, message: request.response.message, details: request.parsed_response["errors"]}
-    end
+    return_vpos_object(request)
   end
 
   def self.get_transaction(transaction_id)
     request = get("#{host}/transactions/#{transaction_id}", set_headers)
-    if request.response.code == "200"
-      return {status: request.response.code, message: request.response.message, data: request.parsed_response}
-    else
-      return {status: request.response.code, message: request.response.message, details: request.parsed_response["errors"]}
-    end
+    return_vpos_object(request)
   end
 
   def self.get_transactions
     request = get("#{host}/transactions", set_headers)
-    if request.response.code == "200"
-      return {status: request.response.code, message: request.response.message, data: request.parsed_response}
-    else
-      return {status: request.response.code, message: request.response.message, details: request.parsed_response["errors"]}
-    end
+    return_vpos_object(request)
   end
 
   def self.get_request_id(request)
     if request[:location].nil?
       get("#{host}/references/invalid", set_headers)
     else
-      if request[:status] == "202"
+      if request[:status] == 202
         request[:location].gsub("/api/v1/requests/", "")
       else
         request[:location].gsub("/api/v1/transactions/", "")
@@ -61,14 +45,21 @@ module Vpos
 
   def self.get_request(request_id)
     request = get("#{host}/requests/#{request_id}", set_headers)
-    if request.response.code == "200" || request.response.code == "303"
-      return {status: request.response.code, message: request.response.message, data: request.parsed_response}
-    else
-      return {status: request.response.code, message: request.response.message, details: request.parsed_response["errors"]}
-    end
+    return_vpos_object(request)
   end
 
   private
+    def self.return_vpos_object(request)
+      case request.response.code.to_i
+      when 200, 201
+        return {status: request.response.code.to_i, message: request.response.message, data: request.parsed_response}
+      when 202, 303
+        return {status: request.response.code.to_i, message: request.response.message, location: request.headers["location"]}
+      else
+        return {status: request.response.code.to_i, message: request.response.message, details: request.parsed_response["errors"]}
+      end
+    end
+
     def self.set_headers
       content = {}
       headers = {'Content-Type' => "application/json", 'Accept' => "application/json", 'Authorization' => set_token, 'Idempotency-Key' => SecureRandom.uuid}
