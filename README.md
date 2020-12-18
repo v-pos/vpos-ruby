@@ -38,6 +38,15 @@ require 'vpos'
 transactions = Vpos.get_transaction("1jHbXEbRTIbbwaoJ6w06nLcRG7X")
 ```
 
+### New Payment Transaction
+Creates a new payment transaction given a valid mobile number associated with a `MULTICAIXA` account
+and a valid amount.
+
+```ruby
+require 'vpos'
+payment = Vpos.new_payment("900111222", "123.45")
+```
+
 ### Have any doubts?
 In case of any doubts, bugs, or the like, please leave an issue. We would love to help.
 
