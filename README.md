@@ -1,39 +1,46 @@
-# Vpos
+# Vpos Ruby
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/vpos`. To experiment with that code, run `bin/console` for an interactive prompt.
+![Ruby](https://github.com/nextbss/vpos-ruby/workflows/Ruby/badge.svg)
+[![](https://img.shields.io/badge/nextbss-opensource-blue.svg)](https://www.nextbss.co.ao)
 
-TODO: Delete this and the text above, and describe your gem
+This ruby library helps you easily interact with the Vpos API,
+Allowing merchants apps/services to request a payment from a client through his/her mobile phone number.
+
+The service currently only works for solutions listed below:
+
+EMIS (Multicaixa Express)
+
+### Documentation
+Does interacting directly with our API service sound better to you? 
+See our documentation on [developer.vpos.ao](https://developer.vpos.ao)
 
 ## Installation
-
-Add this line to your application's Gemfile:
-
 ```ruby
 gem 'vpos'
 ```
 
-And then execute:
+### Usage
+```ruby
+ # TODO
+```
 
-    $ bundle
+### Get all Transactions
+This endpoint retrieves all transactions.
+```ruby
+require 'vpos'
+transactions = Vpos.get_transactions
+```
 
-Or install it yourself as:
+### Get a specific Transaction
+Retrieves a transaction given a valid transaction ID.
+```ruby
+require 'vpos'
+transactions = Vpos.get_transaction("1jHbXEbRTIbbwaoJ6w06nLcRG7X")
+```
 
-    $ gem install vpos
+### Have any doubts?
+In case of any doubts, bugs, or the like, please leave an issue. We would love to help.
 
-## Usage
-
-TODO: Write usage instructions here
-
-## Development
-
-After checking out the repo, run `bin/setup` to install dependencies. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
-
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
-
-## Contributing
-
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/vpos.
-
-## License
-
-The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
+License
+----------------
+TODO
