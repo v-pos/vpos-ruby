@@ -6,7 +6,7 @@
 This ruby library helps you easily interact with the Vpos API,
 Allowing merchants apps/services to request a payment from a client through his/her mobile phone number.
 
-The service currently only works for solutions listed below:
+The service currently works for solutions listed below:
 
 EMIS (Multicaixa Express)
 
