@@ -1,6 +1,6 @@
 # Vpos Ruby
 
-![Ruby](https://github.com/nextbss/vpos-ruby/workflows/Ruby/badge.svg)
+[![Build Status](https://dev.azure.com/next-solutions/vpos/_apis/build/status/vpos%20-%20sdk%20-%20ruby?branchName=main)](https://dev.azure.com/next-solutions/vpos/_build/latest?definitionId=75&branchName=main)
 [![](https://img.shields.io/badge/nextbss-opensource-blue.svg)](https://www.nextbss.co.ao)
 
 This ruby library helps you easily interact with the Vpos API,
