@@ -1,14 +1,21 @@
-# Vpos Ruby
+# vPOS Ruby
 
-[![Build Status](https://dev.azure.com/next-solutions/vpos/_apis/build/status/vpos%20-%20sdk%20-%20ruby?branchName=main)](https://dev.azure.com/next-solutions/vpos/_build/latest?definitionId=75&branchName=main)
+![Azure Build](https://dev.azure.com/next-solutions/vpos/_apis/build/status/vpos%20-%20sdk%20-%20ruby?branchName=main)
 [![](https://img.shields.io/badge/nextbss-opensource-blue.svg)](https://www.nextbss.co.ao)
 
-This ruby library helps you easily interact with the Vpos API,
+This ruby library helps you easily interact with the vPOS API,
 Allowing merchants apps/services to request a payment from a client through his/her mobile phone number.
 
 The service currently works for solutions listed below:
 
 EMIS (Multicaixa Express)
+
+Want to know more about how we are empowering merchants in Angola? See our [website](https://vpos.ao)
+
+### Features
+- Simple interface
+- Uniform plain old objects are returned by all official libraries, so you don't have
+to serialize/deserialize the JSON returned by our API.
 
 ### Documentation
 Does interacting directly with our API service sound better to you? 
@@ -17,6 +24,12 @@ See our documentation on [developer.vpos.ao](https://developer.vpos.ao)
 ## Installation
 ```ruby
 gem 'vpos'
+```
+
+or 
+
+```ruby
+gem install `vpos`
 ```
 
 ### Configuration
@@ -87,9 +100,25 @@ refund = Vpos.new_refund("1kTFGhJH8i58uD9MdJpMjWnoE")
 | --- | --- | --- |
 | `parent_transaction_id` | The ID of transaction you wish to refund | `string`
 
+### Poll Transaction Status
+Poll the status of a transaction given a valid `request_id`. 
+
+Note: The `request_id` in this context is essentially the `transaction_id` of an existing request. 
+
+```ruby
+require 'vpos'
+transactions = Vpos.get_request("1jHbXEbRTIbbwaoJ6w06nLcRG7X")
+```
+
+| Argument | Description | Type |
+| --- | --- | --- |
+| `request_id` | The ID of transaction you wish to poll | `string`
+
+
 ### Have any doubts?
 In case of any doubts, bugs, or the like, please leave an issue. We would love to help.
 
 License
 ----------------
-TODO
+
+The library is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
