@@ -1,5 +1,6 @@
 # vPOS Ruby
 
+![Ruby](https://github.com/nextbss/vpos-ruby/workflows/Ruby/badge.svg)
 [![Gem Version](https://badge.fury.io/rb/vpos.svg)](https://badge.fury.io/rb/vpos)
 [![](https://img.shields.io/badge/nextbss-opensource-blue.svg)](https://www.nextbss.co.ao)
 
