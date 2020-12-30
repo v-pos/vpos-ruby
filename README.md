@@ -1,6 +1,6 @@
 # vPOS Ruby
 
-![Azure Build](https://dev.azure.com/next-solutions/vpos/_apis/build/status/vpos%20-%20sdk%20-%20ruby?branchName=main)
+[![Gem Version](https://badge.fury.io/rb/vpos.svg)](https://badge.fury.io/rb/vpos)
 [![](https://img.shields.io/badge/nextbss-opensource-blue.svg)](https://www.nextbss.co.ao)
 
 This ruby library helps you easily interact with the vPOS API,
@@ -23,13 +23,13 @@ See our documentation on [developer.vpos.ao](https://developer.vpos.ao)
 
 ## Installation
 ```ruby
-gem 'vpos'
+gem 'vpos', '~> 0.1.2'
 ```
 
 or 
 
 ```ruby
-gem install `vpos`
+gem install vpos
 ```
 
 ### Configuration
