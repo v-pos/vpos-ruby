@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["sergio@nextbss.co.ao"]
 
   spec.summary       = %q{The one stop shop for online payments in Angola.}
-  spec.description   = %q{The one stop shop for online payments in Angola. This gem allows you process payments requests from EMIS GPO through vPOS.}
+  spec.description   = %q{The one stop shop for online payments in Angola, allowing you to process payments requests from EMIS GPO through vPOS.}
   spec.homepage      = "https://github.com/nextbss/vpos-ruby"
   spec.license       = "MIT"
 

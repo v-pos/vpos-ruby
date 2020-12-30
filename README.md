@@ -1,6 +1,7 @@
 # vPOS Ruby
 
-![Azure Build](https://dev.azure.com/next-solutions/vpos/_apis/build/status/vpos%20-%20sdk%20-%20ruby?branchName=main)
+![Ruby](https://github.com/nextbss/vpos-ruby/workflows/Ruby/badge.svg)
+[![Gem Version](https://badge.fury.io/rb/vpos.svg)](https://badge.fury.io/rb/vpos)
 [![](https://img.shields.io/badge/nextbss-opensource-blue.svg)](https://www.nextbss.co.ao)
 
 This ruby library helps you easily interact with the vPOS API,
@@ -23,27 +24,27 @@ See our documentation on [developer.vpos.ao](https://developer.vpos.ao)
 
 ## Installation
 ```ruby
-gem 'vpos'
+gem 'vpos', '~> 0.1.2'
 ```
 
 or 
 
 ```ruby
-gem install `vpos`
+gem install vpos
 ```
 
 ### Configuration
 This ruby library requires you set up the following environment variables on your machine before
 interacting with the API using this library:
 
-| Variable | Description
-| --- | --- | 
-| `GPO_POS_ID` | The Point of Sale ID provided by EMIS |
-| `GPO_SUPERVISOR_CARD` | The Supervisor card ID provided by EMIS |
-| `MERCHANT_VPOS_TOKEN` | The API token provided by vPOS |
-| `PAYMENT_CALLBACK_URL` | The URL that will handle payment notifications |
-| `REFUND_CALLBACK_URL` | The URL that will handle refund notifications |
-| `VPOS_ENVIRONMENT` | The vPOS environment, leave empty for `sandbox` mode and use `"prd"` for `production`.  |
+| Variable | Description | Required |
+| --- | --- | --- |
+| `GPO_POS_ID` | The Point of Sale ID provided by EMIS | true |
+| `GPO_SUPERVISOR_CARD` | The Supervisor card ID provided by EMIS | true |
+| `MERCHANT_VPOS_TOKEN` | The API token provided by vPOS | true |
+| `PAYMENT_CALLBACK_URL` | The URL that will handle payment notifications | false |
+| `REFUND_CALLBACK_URL` | The URL that will handle refund notifications | false |
+| `VPOS_ENVIRONMENT` | The vPOS environment, leave empty for `sandbox` mode and use `"prd"` for `production`.  | false |
 
 Don't have this information? [Talk to us](suporte@vpos.ao)
 
