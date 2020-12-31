@@ -1,3 +1,3 @@
-module Vpos
-  VERSION = "0.1.2"
+module VposModule
+  VERSION = "0.1.3"
 end

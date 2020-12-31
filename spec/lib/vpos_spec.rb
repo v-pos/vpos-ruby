@@ -6,7 +6,8 @@ describe "vPOS" do
   context "Payments" do
     context "when is not valid" do
       it "should not create new payment transaction if customer invalid" do
-        payment = Vpos.new_payment("92588855", "1250.34")
+        merchant = Vpos.new
+        payment = merchant.new_payment("92588855", "1250.34")
 
         expect(payment).to be_an(Hash)
         expect(payment[:status]).to eq(400)
@@ -14,7 +15,8 @@ describe "vPOS" do
       end
 
       it "should not create new payment transaction if amount is invalid" do
-        payment = Vpos.new_payment("925888553", "1250.34.94")
+        merchant = Vpos.new
+        payment = merchant.new_payment("925888553", "1250.34.94")
 
         expect(payment).to be_an(Hash)
         expect(payment[:details]["amount"]).to eq(["is invalid"])
@@ -24,7 +26,8 @@ describe "vPOS" do
 
     context "when is valid" do
       it "should create new payment transaction" do
-        payment = Vpos.new_payment("925888553", "1250.34")
+        merchant = Vpos.new
+        payment = merchant.new_payment("925888553", "1250.34")
 
         expect(payment).to be_an(Hash)
         expect(payment[:status]).to eq(202)
@@ -36,8 +39,9 @@ describe "vPOS" do
   context "Requests" do
     context "when is not valid" do
       it "should not get request" do
-        payment = Vpos.new_payment("92588855", "1250.34")
-        request = Vpos.get_request(payment[:location])
+        merchant = Vpos.new
+        payment = merchant.new_payment("92588855", "1250.34")
+        request = merchant.get_request(payment[:location])
 
         expect(request).to be_an(Hash)
         expect(request[:status]).to eq(404)
@@ -47,10 +51,11 @@ describe "vPOS" do
 
     context "when is valid" do
       it "should get request" do
-        payment = Vpos.new_payment("925721924", "1250.34")
+        merchant = Vpos.new
+        payment = merchant.new_payment("925721924", "1250.34")
 
-        request_id = Vpos.get_request_id(payment)
-        request = Vpos.get_request(request_id)
+        request_id = merchant.get_request_id(payment)
+        request = merchant.get_request(request_id)
 
         expect(request).to be_an(Hash)
         expect(request[:status]).to eq(200)
@@ -59,10 +64,11 @@ describe "vPOS" do
     end
   end
 
-  context "Transactions" do
+ context "Transactions" do
     context "when is not valid" do
       it "should not get a transaction if id does not exist" do
-        transaction = Vpos.get_transaction("invalid_id")
+        merchant = Vpos.new
+        transaction = merchant.get_transaction("invalid_id")
 
         expect(transaction).to be_an(Hash)
         expect(transaction[:status]).to eq(404)
@@ -72,14 +78,13 @@ describe "vPOS" do
 
     context "when is valid" do
       it "should get a transaction" do
-        payment = Vpos.new_payment("925888553", "1250.34")
-        payment_id = Vpos.get_request_id(payment)
+        merchant = Vpos.new
+        payment = merchant.new_payment("925888553", "1250.34")
+        payment_id = merchant.get_request_id(payment)
 
-        request_status = Vpos.get_request(payment_id)[:status].to_i
-        until request_status == 303
-          request_status = Vpos.get_request(payment_id)[:status].to_i
-        end
-        transaction = Vpos.get_transaction(payment_id)
+        sleep(10)
+
+        transaction = merchant.get_transaction(payment_id)
 
         expect(transaction).to be_an(Hash)
         expect(transaction[:status]).to eq(200)
@@ -87,7 +92,8 @@ describe "vPOS" do
       end
 
       it "should get all transactions" do
-        transactions = Vpos.get_transactions
+        merchant = Vpos.new
+        transactions = merchant.get_transactions
 
         expect(transactions).to be_an(Hash)
         expect(transactions[:status]).to eq(200)
@@ -99,9 +105,10 @@ describe "vPOS" do
   context "Refunds" do
     context "when is not valid" do
       it "should not create new refund transaction if parent transaction does not exist" do
-        refund = Vpos.new_refund("9kOmKgxWQuCXpUzUB6")
-        refund_id = Vpos.get_request_id(refund)
-        request = Vpos.get_transaction(refund_id)
+        merchant = Vpos.new
+        refund = merchant.new_refund("9kOmKgxWQuCXpUzUB6")
+        refund_id = merchant.get_request_id(refund)
+        request = merchant.get_transaction(refund_id)
 
         expect(refund[:status]).to eq(202)
         expect(request[:data]["status"]).to eq("rejected")
@@ -112,7 +119,8 @@ describe "vPOS" do
 
     context "when is valid" do
       it "should create new refund transaction" do
-        refund = Vpos.new_refund("9kOmKgxWQuCXpUzUB6c")
+        merchant = Vpos.new
+        refund = merchant.new_refund("9kOmKgxWQuCXpUzUB6c")
 
         expect(refund).to be_an(Hash)
         expect(refund[:status]).to eq(202)
