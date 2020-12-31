@@ -24,7 +24,7 @@ See our documentation on [developer.vpos.ao](https://developer.vpos.ao)
 
 ## Installation
 ```ruby
-gem 'vpos', '~> 1.0.0'
+gem 'vpos', '~> 0.1.3'
 ```
 
 or 
