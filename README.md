@@ -24,7 +24,7 @@ See our documentation on [developer.vpos.ao](https://developer.vpos.ao)
 
 ## Installation
 ```ruby
-gem 'vpos', '~> 0.1.2'
+gem 'vpos', '~> 1.0.0'
 ```
 
 or 
@@ -44,7 +44,7 @@ interacting with the API using this library:
 | `MERCHANT_VPOS_TOKEN` | The API token provided by vPOS | true |
 | `PAYMENT_CALLBACK_URL` | The URL that will handle payment notifications | false |
 | `REFUND_CALLBACK_URL` | The URL that will handle refund notifications | false |
-| `VPOS_ENVIRONMENT` | The vPOS environment, leave empty for `sandbox` mode and use `"prd"` for `production`.  | false |
+| `VPOS_ENVIRONMENT` | The vPOS environment, leave empty for `sandbox` mode and use `"PRD"` for `production`.  | false |
 
 Don't have this information? [Talk to us](suporte@vpos.ao)
 
@@ -58,7 +58,9 @@ This endpoint retrieves all transactions.
 
 ```ruby
 require 'vpos'
-transactions = Vpos.get_transactions
+
+merchant = Vpos.new
+transaction = merchant.get_transactions()
 ```
 
 ### Get a specific Transaction
@@ -67,7 +69,9 @@ Retrieves a transaction given a valid transaction ID.
 
 ```ruby
 require 'vpos'
-transactions = Vpos.get_transaction("1jHbXEbRTIbbwaoJ6w06nLcRG7X")
+
+merchant = Vpos.new
+transaction = merchant.get_transaction("1jHbXEbRTIbbwaoJ6w06nLcRG7X")
 ```
 
 | Argument | Description | Type |
@@ -80,7 +84,9 @@ and a valid amount.
 
 ```ruby
 require 'vpos'
-payment = Vpos.new_payment("900111222", "123.45")
+
+merchant = Vpos.new
+payment = merchant.new_payment("900111222", "123.45")
 ```
 
 | Argument | Description | Type |
@@ -94,7 +100,8 @@ Given an existing `parent_transaction_id`, request a refund.
 ```ruby
 require 'vpos'
 
-refund = Vpos.new_refund("1kTFGhJH8i58uD9MdJpMjWnoE")
+merchant = Vpos.new
+refund = merchant.new_refund("1kTFGhJH8i58uD9MdJpMjWnoE")
 ```
 
 | Argument | Description | Type |
@@ -108,13 +115,14 @@ Note: The `request_id` in this context is essentially the `transaction_id` of an
 
 ```ruby
 require 'vpos'
-transactions = Vpos.get_request("1jHbXEbRTIbbwaoJ6w06nLcRG7X")
+
+merchant = Vpos.new
+transaction = merchant.get_request("1jHbXEbRTIbbwaoJ6w06nLcRG7X")
 ```
 
 | Argument | Description | Type |
 | --- | --- | --- |
 | `request_id` | The ID of transaction you wish to poll | `string`
-
 
 ### Have any doubts?
 In case of any doubts, bugs, or the like, please leave an issue. We would love to help.
