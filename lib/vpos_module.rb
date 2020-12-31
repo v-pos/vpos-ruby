@@ -93,7 +93,7 @@ module VposModule
     end
 
     def host
-      if ENV["VPOS_ENVIRONMENT"] == "prd"
+      if ENV["VPOS_ENVIRONMENT"] == "PRD"
         return "https://api.vpos.ao/api/v1"
       else
         return "https://sandbox.vpos.ao/api/v1"
