@@ -4,7 +4,7 @@ require "vpos/version"
 
 Gem::Specification.new do |spec|
   spec.name          = "vpos"
-  spec.version       = Vpos::VERSION
+  spec.version       = VposModule::VERSION
   spec.authors       = ["Sergio Maziano"]
   spec.email         = ["sergio@nextbss.co.ao"]
 
