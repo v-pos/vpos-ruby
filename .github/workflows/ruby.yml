@@ -15,8 +15,10 @@ on:
 
 jobs:
   test:
-
     runs-on: ubuntu-latest
+    strategy:
+      matrix: 
+        ruby-version: ['2.6', '2.7', '3.0']
 
     steps:
     - uses: actions/checkout@v2
