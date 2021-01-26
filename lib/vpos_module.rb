@@ -52,11 +52,11 @@ module VposModule
     def return_vpos_object(request)
       case request.response.code.to_i
       when 200, 201
-        return {status: request.response.code.to_i, message: request.response.message, data: request.parsed_response}
+        return {status_code: request.response.code.to_i, message: request.response.message, data: request.parsed_response}
       when 202, 303
-        return {status: request.response.code.to_i, message: request.response.message, location: request.headers["location"]}
+        return {status_code: request.response.code.to_i, message: request.response.message, location: request.headers["location"]}
       else
-        return {status: request.response.code.to_i, message: request.response.message, details: request.parsed_response["errors"]}
+        return {status_code: request.response.code.to_i, message: request.response.message, details: request.parsed_response["errors"]}
       end
     end
 
@@ -76,7 +76,7 @@ module VposModule
       supervisor_card = ENV["GPO_SUPERVISOR_CARD"]
       return "#{supervisor_card}"
     end
-    
+
     def set_token
       token = ENV["MERCHANT_VPOS_TOKEN"]
       return "Bearer #{token}"
