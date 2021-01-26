@@ -31,14 +31,14 @@ module VposModule
     return_vpos_object(request)
   end
 
-  def get_request_id(request)
-    if request[:location].nil?
+  def get_request_id(response)
+    if response[:location].nil?
       HTTParty.get("#{host}/references/invalid", set_headers)
     else
-      if request[:status] == 202
-        request[:location].gsub("/api/v1/requests/", "")
+      if response[:status_code] == 202
+        response[:location].gsub("/api/v1/requests/", "")
       else
-        request[:location].gsub("/api/v1/transactions/", "")
+        response[:location].gsub("/api/v1/transactions/", "")
       end
     end
   end
