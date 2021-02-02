@@ -10,7 +10,7 @@ describe "vPOS" do
         payment = merchant.new_payment("92588855", "1250.34")
 
         expect(payment).to be_an(Hash)
-        expect(payment[:status]).to eq(400)
+        expect(payment[:status_code]).to eq(400)
         expect(payment[:message]).to eq("Bad Request")
       end
 
@@ -20,7 +20,7 @@ describe "vPOS" do
 
         expect(payment).to be_an(Hash)
         expect(payment[:details]["amount"]).to eq(["is invalid"])
-        expect(payment[:status]).to eq(400)
+        expect(payment[:status_code]).to eq(400)
       end
     end
 
@@ -30,7 +30,7 @@ describe "vPOS" do
         payment = merchant.new_payment("925888553", "1250.34")
 
         expect(payment).to be_an(Hash)
-        expect(payment[:status]).to eq(202)
+        expect(payment[:status_code]).to eq(202)
         expect(payment[:message]).to eq("Accepted")
       end
     end
@@ -44,7 +44,7 @@ describe "vPOS" do
         request = merchant.get_request(payment[:location])
 
         expect(request).to be_an(Hash)
-        expect(request[:status]).to eq(404)
+        expect(request[:status_code]).to eq(404)
         expect(request[:message]).to eq("Not Found")
       end
     end
@@ -58,7 +58,7 @@ describe "vPOS" do
         request = merchant.get_request(request_id)
 
         expect(request).to be_an(Hash)
-        expect(request[:status]).to eq(200)
+        expect(request[:status_code]).to eq(200)
         expect(request[:message]).to eq("OK")
       end
     end
@@ -71,7 +71,7 @@ describe "vPOS" do
         transaction = merchant.get_transaction("invalid_id")
 
         expect(transaction).to be_an(Hash)
-        expect(transaction[:status]).to eq(404)
+        expect(transaction[:status_code]).to eq(404)
         expect(transaction[:message]).to eq("Not Found")
       end
     end
@@ -87,7 +87,7 @@ describe "vPOS" do
         transaction = merchant.get_transaction(payment_id)
 
         expect(transaction).to be_an(Hash)
-        expect(transaction[:status]).to eq(200)
+        expect(transaction[:status_code]).to eq(200)
         expect(transaction[:data]).to be_an(Hash)
       end
 
@@ -96,7 +96,7 @@ describe "vPOS" do
         transactions = merchant.get_transactions
 
         expect(transactions).to be_an(Hash)
-        expect(transactions[:status]).to eq(200)
+        expect(transactions[:status_code]).to eq(200)
         expect(transactions[:data]).to be_an(Array)
       end
     end
@@ -111,7 +111,7 @@ describe "vPOS" do
         request = merchant.get_transaction(refund_id)
 
         expect(refund[:status]).to eq(202)
-        expect(request[:data]["status"]).to eq("rejected")
+        expect(request[:data]["status_code"]).to eq("rejected")
         expect(request[:data]["status_reason"]).to eq(1003)
         expect(request[:data]).to be_an(Hash)
       end
@@ -123,7 +123,7 @@ describe "vPOS" do
         refund = merchant.new_refund("9kOmKgxWQuCXpUzUB6c")
 
         expect(refund).to be_an(Hash)
-        expect(refund[:status]).to eq(202)
+        expect(refund[:status_code]).to eq(202)
       end
     end
   end
