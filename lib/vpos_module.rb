@@ -64,39 +64,37 @@ module VposModule
       content = {}
       headers = {'Content-Type' => "application/json", 'Accept' => "application/json", 'Authorization' => set_token, 'Idempotency-Key' => SecureRandom.uuid}
       content[:headers] = headers
-      return content
+      content
     end
 
     def default_pos_id
       pos_id = ENV["GPO_POS_ID"]
-      return "#{pos_id}".to_i
+      "#{pos_id}".to_i
     end
 
     def default_supervisor_card
       supervisor_card = ENV["GPO_SUPERVISOR_CARD"]
-      return "#{supervisor_card}"
+      "#{supervisor_card}"
     end
-    
+
     def set_token
       token = ENV["MERCHANT_VPOS_TOKEN"]
-      return "Bearer #{token}"
+      "Bearer #{token}"
     end
 
     def default_payment_callback_url
-      url = ENV["PAYMENT_CALLBACK_URL"]
-      return url
+      ENV["PAYMENT_CALLBACK_URL"]
     end
 
     def default_refund_callback_url
-      url = ENV["REFUND_CALLBACK_URL"]
-      return url
+      ENV["REFUND_CALLBACK_URL"]
     end
 
     def host
       if ENV["VPOS_ENVIRONMENT"] == "PRD"
-        return "https://api.vpos.ao/api/v1"
+        "https://api.vpos.ao/api/v1"
       else
-        return "https://sandbox.vpos.ao/api/v1"
+        "https://sandbox.vpos.ao/api/v1"
       end
     end
 end
