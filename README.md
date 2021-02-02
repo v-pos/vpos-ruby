@@ -92,7 +92,7 @@ payment = merchant.new_payment("900111222", "123.45")
 | Argument | Description | Type |
 | --- | --- | --- |
 | `mobile` | The mobile number of the client who will pay | `string`
-| `amount` | The amount the client should pay, eg. "259.99", "259,000.00" | `string`
+| `amount` | The amount the client should pay, eg. "259.99", "259000.00" | `string`
 
 ### Request Refund
 Given an existing `parent_transaction_id`, request a refund.
