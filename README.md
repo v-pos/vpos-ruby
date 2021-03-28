@@ -9,7 +9,7 @@ Allowing merchants apps/services to request a payment from a client through his/
 
 The service currently works for solutions listed below:
 
-EMIS GPO (Multicaixa Express)
+- EMIS GPO (Multicaixa Express)
 
 Want to know more about how we are empowering merchants in Angola? See our [website](https://vpos.ao)
 
@@ -24,7 +24,7 @@ See our documentation on [developer.vpos.ao](https://developer.vpos.ao)
 
 ## Installation
 ```ruby
-gem 'vpos', '~> 0.1.3'
+gem 'vpos', '~> 1.0.0'
 ```
 
 or 
@@ -34,9 +34,29 @@ gem install vpos
 ```
 
 ### Configuration
-This ruby library requires you set up the following environment variables on your machine before
-interacting with the API using this library:
+This ruby library requires you to have:
+- POS_ID provided by EMIS that can be requested through your support bank.
+- Supervisor Card provided by EMIS that can be requested through your support bank.
+- Token provided by vPOS that can be generated through vPOS [merchant](https://merchant.vpos.ao) portal.
 
+Don't have this information? [Talk to us](suporte@vpos.ao)
+
+Given you have all the requirements above, you will now
+be able to authenticate and communicate effectively with our API using this library. 
+
+The next section will show the various actions that can be performed by you, the merchant.
+
+### Get all Transactions
+This endpoint retrieves all transactions.
+
+Using Environment variables
+```ruby
+require 'vpos'
+
+merchant = Vpos.new
+transaction = merchant.get_transactions()
+```
+#### Environment variables
 | Variable | Description | Required |
 | --- | --- | --- |
 | `GPO_POS_ID` | The Point of Sale ID provided by EMIS | true |
@@ -46,22 +66,21 @@ interacting with the API using this library:
 | `REFUND_CALLBACK_URL` | The URL that will handle refund notifications | false |
 | `VPOS_ENVIRONMENT` | The vPOS environment, leave empty for `sandbox` mode and use `"PRD"` for `production`.  | false |
 
-Don't have this information? [Talk to us](suporte@vpos.ao)
-
-Given you have set up all the environment variables above with the correct information, you will now
-be able to authenticate and communicate effectively with our API using this library. 
-
-The next section will show the various payment actions that can be performed by you, the merchant.
-
-### Get all Transactions
-This endpoint retrieves all transactions.
+or using one of the optional arguments
 
 ```ruby
 require 'vpos'
 
-merchant = Vpos.new
-transaction = merchant.get_transactions()
+merchant = Vpos.new(token: 'your_token_here', pos_id: '000', supervisor_card: '9999999999999999', payment_callback_url: 'https://<url>', refund_callback_url: 'https://<url>')
 ```
+#### Optional Arguments
+| Argument | Description | Type |
+| --- | --- | --- |
+| `token` | Token generated at [vPOS](https://merchant.vpos.ao) dashboard | `string`
+| `pos_id` | Merchant POS ID provided by EMIS | `string`
+| `supervisor_card` | Merchant Supervisor Card number provided by EMIS | `string`
+| `payment_callback_url` | Merchant application JSON endpoint to accept the callback payment response | `string`
+| `refund_callback_url` | Merchant application JSON endpoint to accept the callback refund response | `string`
 
 ### Get a specific Transaction
 Retrieves a transaction given a valid transaction ID.
