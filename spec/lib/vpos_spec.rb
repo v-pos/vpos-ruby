@@ -108,12 +108,16 @@ describe "vPOS" do
         merchant = Vpos.new
         refund = merchant.new_refund("9kOmKgxWQuCXpUzUB6")
         refund_id = merchant.get_request_id(refund)
-        request = merchant.get_transaction(refund_id)
 
-        expect(refund[:status]).to eq(202)
-        expect(request[:data]["status_code"]).to eq("rejected")
-        expect(request[:data]["status_reason"]).to eq(1003)
-        expect(request[:data]).to be_an(Hash)
+        sleep(10)
+
+        transaction = merchant.get_transaction(refund_id)
+
+        expect(transaction).to be_an(Hash)
+        expect(transaction[:status_code]).to eq(200)
+        expect(transaction[:data]["status"]).to eq('rejected')
+        expect(transaction[:data]["status_reason"]).to eq(1003)
+        expect(transaction[:data]).to be_an(Hash)
       end
     end
 

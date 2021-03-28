@@ -7,14 +7,14 @@ module VposModule
   include HTTParty
   follow_redirects false
 
-  def new_payment(customer, amount, pos_id: default_pos_id, callback_url: default_payment_callback_url)
+  def new_payment(customer, amount, pos_id: @pos_id, callback_url: @payment_callback_url)
     content = set_headers
     content[:body] = {type:"payment", pos_id: pos_id, mobile: customer, amount: amount, callback_url: callback_url}.to_json
     request = HTTParty.post("#{host}/transactions", content)
     return_vpos_object(request)
   end
 
-  def new_refund(transaction_id, supervisor_card: default_supervisor_card, callback_url: default_refund_callback_url)
+  def new_refund(transaction_id, supervisor_card: @supervisor_card, callback_url: @refund_callback_url)
     content = set_headers
     content[:body] = {type: "refund", parent_transaction_id: transaction_id, supervisor_card: supervisor_card, callback_url: callback_url}.to_json
     request = HTTParty.post("#{host}/transactions", content)
@@ -62,32 +62,9 @@ module VposModule
 
     def set_headers
       content = {}
-      headers = {'Content-Type' => "application/json", 'Accept' => "application/json", 'Authorization' => set_token, 'Idempotency-Key' => SecureRandom.uuid}
+      headers = {'Content-Type' => "application/json", 'Accept' => "application/json", 'Authorization' => @token, 'Idempotency-Key' => SecureRandom.uuid}
       content[:headers] = headers
       content
-    end
-
-    def default_pos_id
-      pos_id = ENV["GPO_POS_ID"]
-      "#{pos_id}".to_i
-    end
-
-    def default_supervisor_card
-      supervisor_card = ENV["GPO_SUPERVISOR_CARD"]
-      "#{supervisor_card}"
-    end
-
-    def set_token
-      token = ENV["MERCHANT_VPOS_TOKEN"]
-      "Bearer #{token}"
-    end
-
-    def default_payment_callback_url
-      ENV["PAYMENT_CALLBACK_URL"]
-    end
-
-    def default_refund_callback_url
-      ENV["REFUND_CALLBACK_URL"]
     end
 
     def host
