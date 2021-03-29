@@ -64,7 +64,7 @@ describe "vPOS" do
     end
   end
 
- context "Transactions" do
+  context "Transactions" do
     context "when is not valid" do
       it "should not get a transaction if id does not exist" do
         merchant = Vpos.new
