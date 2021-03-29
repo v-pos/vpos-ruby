@@ -64,7 +64,6 @@ transaction = merchant.get_transactions()
 | `MERCHANT_VPOS_TOKEN` | The API token provided by vPOS | true |
 | `PAYMENT_CALLBACK_URL` | The URL that will handle payment notifications | false |
 | `REFUND_CALLBACK_URL` | The URL that will handle refund notifications | false |
-| `VPOS_ENVIRONMENT` | The vPOS environment, leave empty for `sandbox` mode and use `"PRD"` for `production`.  | false |
 
 or using one of the optional arguments
 
@@ -81,6 +80,7 @@ merchant = Vpos.new(token: 'your_token_here', pos_id: '000', supervisor_card: '9
 | `supervisor_card` | Merchant Supervisor Card number provided by EMIS | `string`
 | `payment_callback_url` | Merchant application JSON endpoint to accept the callback payment response | `string`
 | `refund_callback_url` | Merchant application JSON endpoint to accept the callback refund response | `string`
+| `profile` | The vPOS environment, leave empty for `sandbox` mode and use `"PRD"` for `production`.  | `string` |
 
 ### Get a specific Transaction
 Retrieves a transaction given a valid transaction ID.

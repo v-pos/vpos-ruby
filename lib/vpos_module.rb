@@ -7,33 +7,33 @@ module VposModule
   include HTTParty
   follow_redirects false
 
-  def new_payment(customer, amount, pos_id: @pos_id, callback_url: @payment_callback_url)
+  def new_payment(customer, amount, pos_id: @pos_id, callback_url: @payment_callback_url, profile: @environment)
     content = set_headers
     content[:body] = {type:"payment", pos_id: pos_id, mobile: customer, amount: amount, callback_url: callback_url}.to_json
-    request = HTTParty.post("#{host}/transactions", content)
+    request = HTTParty.post("#{host(profile)}/transactions", content)
     return_vpos_object(request)
   end
 
-  def new_refund(transaction_id, supervisor_card: @supervisor_card, callback_url: @refund_callback_url)
+  def new_refund(transaction_id, supervisor_card: @supervisor_card, callback_url: @refund_callback_url, profile: @environment)
     content = set_headers
     content[:body] = {type: "refund", parent_transaction_id: transaction_id, supervisor_card: supervisor_card, callback_url: callback_url}.to_json
-    request = HTTParty.post("#{host}/transactions", content)
+    request = HTTParty.post("#{host(profile)}/transactions", content)
     return_vpos_object(request)
   end
 
-  def get_transaction(transaction_id)
-    request = HTTParty.get("#{host}/transactions/#{transaction_id}", set_headers)
+  def get_transaction(transaction_id, profile: @environment)
+    request = HTTParty.get("#{host(profile)}/transactions/#{transaction_id}", set_headers)
     return_vpos_object(request)
   end
 
-  def get_transactions
-    request = HTTParty.get("#{host}/transactions", set_headers)
+  def get_transactions(profile: @environment)
+    request = HTTParty.get("#{host(profile)}/transactions", set_headers)
     return_vpos_object(request)
   end
 
-  def get_request_id(response)
+  def get_request_id(response, profile: @environment)
     if response[:location].nil?
-      HTTParty.get("#{host}/references/invalid", set_headers)
+      HTTParty.get("#{host(profile)}/references/invalid", set_headers)
     else
       if response[:status_code] == 202
         response[:location].gsub("/api/v1/requests/", "")
@@ -43,8 +43,8 @@ module VposModule
     end
   end
 
-  def get_request(request_id)
-    request = HTTParty.get("#{host}/requests/#{request_id}", set_headers)
+  def get_request(request_id, profile: @environment)
+    request = HTTParty.get("#{host(profile)}/requests/#{request_id}", set_headers)
     return_vpos_object(request)
   end
 
@@ -67,8 +67,8 @@ module VposModule
       content
     end
 
-    def host
-      if ENV["VPOS_ENVIRONMENT"] == "PRD"
+    def host(profile)
+      if profile == "PRD"
         "https://api.vpos.ao/api/v1"
       else
         "https://sandbox.vpos.ao/api/v1"
