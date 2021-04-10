@@ -1,6 +1,5 @@
 # vPOS Ruby
-
-![Ruby](https://github.com/nextbss/vpos-ruby/workflows/Ruby/badge.svg)
+[![Ruby](https://github.com/v-pos/vpos-ruby/actions/workflows/ruby.yml/badge.svg?branch=main)](https://github.com/v-pos/vpos-ruby/actions/workflows/ruby.yml)
 [![Gem Version](https://badge.fury.io/rb/vpos.svg)](https://badge.fury.io/rb/vpos)
 [![](https://img.shields.io/badge/nextbss-opensource-blue.svg)](https://www.nextbss.co.ao)
 
@@ -54,7 +53,7 @@ Using Environment variables
 require 'vpos'
 
 merchant = Vpos.new
-transaction = merchant.get_transactions()
+transaction = merchant.get_transactions
 ```
 #### Environment variables
 | Variable | Description | Required |
@@ -70,7 +69,7 @@ or using one of the optional arguments
 ```ruby
 require 'vpos'
 
-merchant = Vpos.new(token: 'your_token_here', pos_id: '000', supervisor_card: '9999999999999999', payment_callback_url: 'https://<url>', refund_callback_url: 'https://<url>')
+merchant = Vpos.new(token: 'your_token_here', pos_id: '000', supervisor_card: '9999999999999999', payment_callback_url: 'https://<url>', refund_callback_url: 'https://<url>', environment: 'PRD')
 ```
 #### Optional Arguments
 | Argument | Description | Type |
@@ -80,7 +79,7 @@ merchant = Vpos.new(token: 'your_token_here', pos_id: '000', supervisor_card: '9
 | `supervisor_card` | Merchant Supervisor Card number provided by EMIS | `string`
 | `payment_callback_url` | Merchant application JSON endpoint to accept the callback payment response | `string`
 | `refund_callback_url` | Merchant application JSON endpoint to accept the callback refund response | `string`
-| `profile` | The vPOS environment, leave empty for `sandbox` mode and use `"PRD"` for `production`.  | `string` |
+| `environment` | The vPOS environment, leave empty for `sandbox` mode and use `"PRD"` for `production`.  | `string` |
 
 ### Get a specific Transaction
 Retrieves a transaction given a valid transaction ID.
@@ -90,7 +89,7 @@ Retrieves a transaction given a valid transaction ID.
 require 'vpos'
 
 merchant = Vpos.new
-transaction = merchant.get_transaction("1jHbXEbRTIbbwaoJ6w06nLcRG7X")
+transaction = merchant.get_transaction('1jHbXEbRTIbbwaoJ6w06nLcRG7X')
 ```
 
 | Argument | Description | Type |
@@ -105,7 +104,7 @@ and a valid amount.
 require 'vpos'
 
 merchant = Vpos.new
-payment = merchant.new_payment("900111222", "123.45")
+payment = merchant.new_payment('900111222', '123.45')
 ```
 
 | Argument | Description | Type |
@@ -120,7 +119,7 @@ Given an existing `parent_transaction_id`, request a refund.
 require 'vpos'
 
 merchant = Vpos.new
-refund = merchant.new_refund("1kTFGhJH8i58uD9MdJpMjWnoE")
+refund = merchant.new_refund('1kTFGhJH8i58uD9MdJpMjWnoE')
 ```
 
 | Argument | Description | Type |
@@ -136,7 +135,7 @@ Note: The `request_id` in this context is essentially the `transaction_id` of an
 require 'vpos'
 
 merchant = Vpos.new
-transaction = merchant.get_request("1jHbXEbRTIbbwaoJ6w06nLcRG7X")
+transaction = merchant.get_request('1jHbXEbRTIbbwaoJ6w06nLcRG7X')
 ```
 
 | Argument | Description | Type |

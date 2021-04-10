@@ -6,11 +6,11 @@ Gem::Specification.new do |spec|
   spec.name          = "vpos"
   spec.version       = VposModule::VERSION
   spec.authors       = ["Sergio Maziano"]
-  spec.email         = ["sergio@nextbss.co.ao"]
+  spec.email         = ["sergio.maziano@vpos.ao"]
 
   spec.summary       = %q{The one stop shop for online payments in Angola.}
   spec.description   = %q{The one stop shop for online payments in Angola, allowing you to process payments requests from EMIS GPO through vPOS.}
-  spec.homepage      = "https://github.com/nextbss/vpos-ruby"
+  spec.homepage      = "https://github.com/v-pos/vpos-ruby"
   spec.license       = "MIT"
 
   # Specify which files should be added to the gem when it is released.
