@@ -1,7 +1,7 @@
 # vPOS Ruby
 [![Ruby](https://github.com/v-pos/vpos-ruby/actions/workflows/ruby.yml/badge.svg?branch=main)](https://github.com/v-pos/vpos-ruby/actions/workflows/ruby.yml)
 [![Gem Version](https://badge.fury.io/rb/vpos.svg)](https://badge.fury.io/rb/vpos)
-[![](https://img.shields.io/badge/nextbss-opensource-blue.svg)](https://www.nextbss.co.ao)
+[![](https://img.shields.io/badge/vPOS-OpenSource-blue.svg)](https://www.nextbss.co.ao)
 
 This ruby library helps you easily interact with the vPOS API,
 Allowing merchants apps/services to request a payment from a client through his/her mobile phone number.
@@ -45,16 +45,19 @@ be able to authenticate and communicate effectively with our API using this libr
 
 The next section will show the various actions that can be performed by you, the merchant.
 
-### Get all Transactions
-This endpoint retrieves all transactions.
+## Use
+### Create Instance
 
-Using Environment variables
 ```ruby
 require 'vpos'
 
+# use the default environment variables option
 merchant = Vpos.new
-transaction = merchant.get_transactions
+
+# or use optional arguments option
+merchant = Vpos.new(token: 'your_token_here', environment: 'PRD')
 ```
+
 #### Environment variables
 | Variable | Description | Required |
 | --- | --- | --- |
@@ -66,11 +69,6 @@ transaction = merchant.get_transactions
 
 or using one of the optional arguments
 
-```ruby
-require 'vpos'
-
-merchant = Vpos.new(token: 'your_token_here', pos_id: '000', supervisor_card: '9999999999999999', payment_callback_url: 'https://<url>', refund_callback_url: 'https://<url>', environment: 'PRD')
-```
 #### Optional Arguments
 | Argument | Description | Type |
 | --- | --- | --- |
@@ -81,14 +79,17 @@ merchant = Vpos.new(token: 'your_token_here', pos_id: '000', supervisor_card: '9
 | `refund_callback_url` | Merchant application JSON endpoint to accept the callback refund response | `string`
 | `environment` | The vPOS environment, leave empty for `sandbox` mode and use `"PRD"` for `production`.  | `string` |
 
+### Get all Transactions
+This endpoint retrieves all transactions.
+
+```ruby
+transaction = merchant.get_transactions
+```
+
 ### Get a specific Transaction
 Retrieves a transaction given a valid transaction ID.
 
-
 ```ruby
-require 'vpos'
-
-merchant = Vpos.new
 transaction = merchant.get_transaction('1jHbXEbRTIbbwaoJ6w06nLcRG7X')
 ```
 
@@ -101,9 +102,6 @@ Creates a new payment transaction given a valid mobile number associated with a 
 and a valid amount.
 
 ```ruby
-require 'vpos'
-
-merchant = Vpos.new
 payment = merchant.new_payment('900111222', '123.45')
 ```
 
@@ -116,9 +114,6 @@ payment = merchant.new_payment('900111222', '123.45')
 Given an existing `parent_transaction_id`, request a refund.
 
 ```ruby
-require 'vpos'
-
-merchant = Vpos.new
 refund = merchant.new_refund('1kTFGhJH8i58uD9MdJpMjWnoE')
 ```
 
@@ -132,9 +127,6 @@ Poll the status of a transaction given a valid `request_id`.
 Note: The `request_id` in this context is essentially the `transaction_id` of an existing request. 
 
 ```ruby
-require 'vpos'
-
-merchant = Vpos.new
 transaction = merchant.get_request('1jHbXEbRTIbbwaoJ6w06nLcRG7X')
 ```
 
