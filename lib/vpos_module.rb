@@ -26,11 +26,6 @@ module VposModule
     return_vpos_object(request)
   end
 
-  def get_transactions
-    request = HTTParty.get("#{host}/transactions", set_headers)
-    return_vpos_object(request)
-  end
-
   def get_request_id(response)
     if response[:location].nil?
       HTTParty.get("#{host}/references/invalid", set_headers)
@@ -68,10 +63,6 @@ module VposModule
     end
 
     def host
-      if @environment == "PRD"
-        "https://api.vpos.ao/api/v1"
-      else
-        "https://sandbox.vpos.ao/api/v1"
-      end
+      "https://api.vpos.ao/api/v1"
     end
 end
