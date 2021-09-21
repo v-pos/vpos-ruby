@@ -1,5 +1,4 @@
 require_relative "vpos_module"
-require "concurrent"
 
 class Vpos
   include VposModule
