@@ -30,12 +30,16 @@ describe "vPOS" do
         payment = merchant.new_payment("900000000", "1234.56", callback_url: "")
         request_id = merchant.get_request_id(payment)
 
-        sleep(15)
         transaction = merchant.get_transaction(request_id)
 
         expect(payment).to be_an(Hash)
         expect(payment[:status_code]).to eq(202)
         expect(payment[:message]).to eq("Accepted")
+
+        while transaction[:status_code] == 404
+          sleep(4)
+          transaction = merchant.get_transaction(request_id)
+        end
 
         expect(transaction).to be_an(Hash)
         expect(transaction[:status_code]).to eq(200)
@@ -92,11 +96,11 @@ describe "vPOS" do
         payment = merchant.new_payment("925888553", "1250.34", callback_url: "")
         payment_id = merchant.get_request_id(payment)
 
-        transaction = merchant.await.get_transaction(payment_id)
+        transaction = merchant.get_transaction(payment_id)
 
-        expect(transaction.value).to be_an(Hash)
-        expect(transaction.value[:data]["id"]).to eq(payment_id)
-        expect(transaction.value[:status_code]).to eq(200)
+        expect(transaction).to be_an(Hash)
+        expect(transaction[:data]["id"]).to eq(payment_id)
+        expect(transaction[:status_code]).to eq(200)
       end
     end
   end
@@ -106,15 +110,19 @@ describe "vPOS" do
       it "should not create new refund transaction if parent transaction does not exist" do
         merchant = Vpos.new
         refund = merchant.new_refund("9kOmKgxWQuCXpUzUB6", callback_url: "")
-        refund_id = merchant.get_request_id(refund)
+        request_id = merchant.get_request_id(refund)
 
-        transaction = merchant.await.get_transaction(refund_id)
+        transaction = merchant.get_transaction(request_id)
 
-        expect(transaction.value).to be_an(Hash)
-        expect(transaction.value[:status_code]).to eq(200)
-        expect(transaction.value[:data]["status"]).to eq('rejected')
-        expect(transaction.value[:data]["status_reason"]).to eq(1003)
-        expect(transaction.value[:data]).to be_an(Hash)
+        expect(refund).to be_an(Hash)
+        expect(refund[:status_code]).to eq(202)
+        expect(refund[:message]).to eq("Accepted")
+
+        expect(transaction).to be_an(Hash)
+        expect(transaction[:status_code]).to eq(200)
+        expect(transaction[:data]["status"]).to eq('rejected')
+        expect(transaction[:data]["status_reason"]).to eq(1003)
+        expect(transaction[:data]).to be_an(Hash)
       end
     end
 

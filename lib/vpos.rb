@@ -3,7 +3,6 @@ require "concurrent"
 
 class Vpos
   include VposModule
-  include Concurrent::Async
 
   def initialize(token: set_token, pos_id: default_pos_id, supervisor_card: default_supervisor_card, payment_callback_url: default_payment_callback_url, refund_callback_url: default_refund_callback_url)
     @token = token
