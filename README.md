@@ -77,14 +77,6 @@ or using one of the optional arguments
 | `supervisor_card` | Merchant Supervisor Card number provided by EMIS | `string`
 | `payment_callback_url` | Merchant application JSON endpoint to accept the callback payment response | `string`
 | `refund_callback_url` | Merchant application JSON endpoint to accept the callback refund response | `string`
-| `environment` | The vPOS environment, leave empty for `sandbox` mode and use `"PRD"` for `production`.  | `string` |
-
-### Get all Transactions
-This endpoint retrieves all transactions.
-
-```ruby
-transaction = merchant.get_transactions
-```
 
 ### Get a specific Transaction
 Retrieves a transaction given a valid transaction ID.
