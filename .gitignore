@@ -24,3 +24,4 @@ test/version_tmp
 tmp
 example.rb
 .idea
+vendor/*

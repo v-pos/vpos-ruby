@@ -26,11 +26,6 @@ module VposModule
     return_vpos_object(request)
   end
 
-  def get_transactions
-    request = HTTParty.get("#{host}/transactions", set_headers)
-    return_vpos_object(request)
-  end
-
   def get_request_id(response)
     if response[:location].nil?
       HTTParty.get("#{host}/references/invalid", set_headers)
