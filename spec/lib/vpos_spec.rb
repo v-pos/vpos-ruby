@@ -27,14 +27,7 @@ describe "vPOS" do
     context "when is valid" do
       it "should create new payment transaction" do
         merchant = Vpos.new
-<<<<<<< HEAD
         payment = merchant.new_payment("900000000", "1250.34", callback_url: "")
-=======
-        payment = merchant.new_payment("900000000", "1234.56", callback_url: "")
-        request_id = merchant.get_request_id(payment)
-
-        transaction = merchant.get_transaction(request_id)
->>>>>>> 587963d82a894f6daf02cfeaf8c2d8d43e846918
 
         expect(payment).to be_an(Hash)
         expect(payment[:status_code]).to eq(202)
@@ -70,11 +63,7 @@ describe "vPOS" do
     context "when is valid" do
       it "should get request" do
         merchant = Vpos.new
-<<<<<<< HEAD
         payment = merchant.new_payment("900000000", "1250.34", callback_url: "")
-=======
-        payment = merchant.new_payment("925721924", "1250.34", callback_url: "")
->>>>>>> 587963d82a894f6daf02cfeaf8c2d8d43e846918
 
         request_id = merchant.get_request_id(payment)
         request = merchant.get_request(request_id)
