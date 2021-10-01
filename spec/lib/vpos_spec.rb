@@ -27,11 +27,29 @@ describe "vPOS" do
     context "when is valid" do
       it "should create new payment transaction" do
         merchant = Vpos.new
+<<<<<<< HEAD
         payment = merchant.new_payment("900000000", "1250.34", callback_url: "")
+=======
+        payment = merchant.new_payment("900000000", "1234.56", callback_url: "")
+        request_id = merchant.get_request_id(payment)
+
+        transaction = merchant.get_transaction(request_id)
+>>>>>>> 587963d82a894f6daf02cfeaf8c2d8d43e846918
 
         expect(payment).to be_an(Hash)
         expect(payment[:status_code]).to eq(202)
         expect(payment[:message]).to eq("Accepted")
+
+        while transaction[:status_code] == 404
+          sleep(4)
+          transaction = merchant.get_transaction(request_id)
+        end
+
+        expect(transaction).to be_an(Hash)
+        expect(transaction[:status_code]).to eq(200)
+        expect(transaction[:message]).to eq("OK")
+        expect(transaction[:data]["amount"]).to eq("1234.56")
+        expect(transaction[:data]["status"]).to eq("accepted")
       end
     end
   end
@@ -52,7 +70,11 @@ describe "vPOS" do
     context "when is valid" do
       it "should get request" do
         merchant = Vpos.new
+<<<<<<< HEAD
         payment = merchant.new_payment("900000000", "1250.34", callback_url: "")
+=======
+        payment = merchant.new_payment("925721924", "1250.34", callback_url: "")
+>>>>>>> 587963d82a894f6daf02cfeaf8c2d8d43e846918
 
         request_id = merchant.get_request_id(payment)
         request = merchant.get_request(request_id)
@@ -86,8 +108,6 @@ describe "vPOS" do
 
         transaction = merchant.get_transaction(payment_id)
 
-        expect(transaction).to be_an(Hash)
-        expect(transaction[:status_code]).to eq(200)
         expect(transaction[:data]).to be_an(Hash)
       end
     end
@@ -102,7 +122,9 @@ describe "vPOS" do
 
         sleep(100)
 
-        transaction = merchant.get_transaction(refund_id)
+        expect(refund).to be_an(Hash)
+        expect(refund[:status_code]).to eq(202)
+        expect(refund[:message]).to eq("Accepted")
 
         expect(transaction).to be_an(Hash)
         expect(transaction[:status_code]).to eq(200)
