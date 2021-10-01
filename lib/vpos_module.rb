@@ -68,10 +68,6 @@ module VposModule
     end
 
     def host
-      if @environment == "PRD"
-        "https://api.vpos.ao/api/v1"
-      else
-        "https://sandbox.vpos.ao/api/v1"
-      end
+      "https://vpos.ao/api/v1"
     end
 end
