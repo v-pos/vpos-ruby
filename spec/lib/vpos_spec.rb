@@ -28,6 +28,9 @@ describe "vPOS" do
       it "should create new payment transaction" do
         merchant = Vpos.new
         payment = merchant.new_payment("900000000", "1250.34", callback_url: "")
+        request_id = merchant.get_request_id(payment)
+
+        transaction = merchant.get_transaction(request_id)
 
         expect(payment).to be_an(Hash)
         expect(payment[:status_code]).to eq(202)
@@ -109,11 +112,16 @@ describe "vPOS" do
         refund = merchant.new_refund("9kOmKgxWQuCXpUzUB6", callback_url: "")
         refund_id = merchant.get_request_id(refund)
 
-        sleep(100)
+        transaction = merchant.get_transaction(refund_id)
 
         expect(refund).to be_an(Hash)
         expect(refund[:status_code]).to eq(202)
         expect(refund[:message]).to eq("Accepted")
+
+        while transaction[:status_code] == 404
+          sleep(4)
+          transaction = merchant.get_transaction(request_id)
+        end
 
         expect(transaction).to be_an(Hash)
         expect(transaction[:status_code]).to eq(200)
