@@ -27,7 +27,7 @@ describe "vPOS" do
     context "when is valid" do
       it "should create new payment transaction" do
         merchant = Vpos.new
-        payment = merchant.new_payment("900000000", "1250.34", callback_url: "")
+        payment = merchant.new_payment("900000000", "1234.56", callback_url: "")
         request_id = merchant.get_request_id(payment)
 
         transaction = merchant.get_transaction(request_id)
