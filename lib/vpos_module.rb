@@ -63,6 +63,6 @@ module VposModule
     end
 
     def host
-      "https://api.vpos.ao/api/v1"
+      "https://vpos.ao/api/v1"
     end
 end
