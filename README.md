@@ -81,26 +81,26 @@ Retrieves a transaction given a valid transaction ID using a env variable token.
 
 ```ruby
 request = vpos.get_transaction(transaction_id: '1jHbXEbRTIbbwaoJ6w06nLcRG7X')
-#=> {:status_code=>202, :message=>"ACCEPTED", :location=>"/api/v1/requests/29fTRtkFaf8cQklRuHTvGDaecj4"}
+# {:status_code=>202, :message=>"ACCEPTED", :location=>"/api/v1/requests/29fTRtkFaf8cQklRuHTvGDaecj4"}
 
 request_id = vpos.get_request_id(request)
-#=> "29fTRtkFaf8cQklRuHTvGDaecj4"
+# "29fTRtkFaf8cQklRuHTvGDaecj4"
 
 transaction = vpos.get_transaction(transaction_id: "29fTRtkFaf8cQklRuHTvGDaecj4")
-#=> {:status_code=>200,
-     :message=>"OK",
-     :data=> {
-       :amount=>"1.23",
-       :clearing_period=>156,
-       :id=>"29fTRtkFaf8cQklRuHTvGDaecj4",
-       :mobile=>"900000000",
-       :parent_transaction_id=>nil,
-       :pos_id=>111,
-       :status=>"accepted",
-       :status_datetime=>"2022-05-25T18:25:39Z",
-       :status_reason=>nil,
-       :type=>"payment"
-     }
+# {:status_code=>200,
+#    :message=>"OK",
+#    :data=> {
+#      :amount=>"1.23",
+#      :clearing_period=>156,
+#      :id=>"29fTRtkFaf8cQklRuHTvGDaecj4",
+#      :mobile=>"900000000",
+#      :parent_transaction_id=>nil,
+#      :pos_id=>111,
+#      :status=>"accepted",
+#      :status_datetime=>"2022-05-25T18:25:39Z",
+#      :status_reason=>nil,
+#      :type=>"payment"
+#    }
 ```
 
 or
