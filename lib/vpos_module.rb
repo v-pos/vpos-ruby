@@ -53,7 +53,7 @@ module VposModule
     end
   end
 
-  def get_request(request_id: request_id, token: @token)
+  def get_request(request_id: required, token: @token)
     conn = connection
     response = conn.get("requests/#{request_id}") do |req|
       req.headers['Authorization'] = token
