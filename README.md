@@ -77,10 +77,45 @@ or using one of the optional arguments
 | `refund_callback_url` | Merchant application JSON endpoint to accept the callback refund response | `string`
 
 ### Get a specific Transaction
-Retrieves a transaction given a valid transaction ID using a env variable token.
+Retrieves a transaction given a valid transaction ID:
 
 ```ruby
-request = vpos.get_transaction(transaction_id: '1jHbXEbRTIbbwaoJ6w06nLcRG7X')
+# Using a env variable token
+transaction = vpos.get_transaction(transaction_id: '1jHbXEbRTIbbwaoJ6w06nLcRG7X')
+# Or using a explicit token
+transaction = vpos.get_transaction(transaction_id: '1jHbXEbRTIbbwaoJ6w06nLcRG7X', token: 'EbRTIbb1jHbXEbRTIbbwaoJ6w06nLcRG7X')
+# {
+#   :status_code=>200,
+#   :message=>"OK",
+#   :data=> {
+#      :amount=>"1.23",
+#      :clearing_period=>156,
+#      :id=>"29fTRtkFaf8cQklRuHTvGDaecj4",
+#      :mobile=>"900000000",
+#      :parent_transaction_id=>nil,
+#      :pos_id=>111,
+#      :status=>"accepted",
+#      :status_datetime=>"2022-05-25T18:25:39Z",
+#      :status_reason=>nil,
+#      :type=>"payment"
+#    }
+# }
+```
+
+| Argument | Description | Type | Required |
+| --- | --- | --- | --- |
+| `transaction_id` | An existing Transaction ID | `string` | Yes |
+| `token` | Merchant token generated at vPOS merchant portal | `string` | No (if set as env variable) |
+
+### New Payment Transaction
+Creates a new payment transaction given a valid mobile number associated with a `MULTICAIXA` account
+and a valid amount:
+
+```ruby
+# Using a env variable token
+request = vpos.new_payment(customer: '900111222', amount: '123.45')
+# Or using a explicit token
+request = vpos.new_payment(customer: '900111222', amount: '123.45', token: 'EbRTIbb1jHbXEbRTIbbwaoJ6w06nLcRG7X')
 # {:status_code=>202, :message=>"ACCEPTED", :location=>"/api/v1/requests/29fTRtkFaf8cQklRuHTvGDaecj4"}
 
 request_id = vpos.get_request_id(request)
@@ -105,35 +140,6 @@ transaction = vpos.get_transaction(transaction_id: "29fTRtkFaf8cQklRuHTvGDaecj4"
 # }
 ```
 
-or
-
-Using a explicitly stated token
-
-```ruby
-request = vpos.get_transaction(transaction_id: '1jHbXEbRTIbbwaoJ6w06nLcRG7X', token: 'EbRTIbb1jHbXEbRTIbbwaoJ6w06nLcRG7X')
-```
-
-| Argument | Description | Type | Required |
-| --- | --- | --- | --- |
-| `transaction_id` | An existing Transaction ID | `string` | Yes |
-| `token` | Merchant token generated at vPOS merchant portal | `string` | No (if set as env variable) |
-
-### New Payment Transaction
-Creates a new payment transaction given a valid mobile number associated with a `MULTICAIXA` account
-and a valid amount using a env variable token.
-
-```ruby
-payment = vpos.new_payment(customer: '900111222', amount: '123.45')
-```
-
-or
-
-Using a explicitly stated token
-
-```ruby
-payment = vpos.new_payment(customer: '900111222', amount: '123.45', token: 'EbRTIbb1jHbXEbRTIbbwaoJ6w06nLcRG7X')
-```
-
 | Argument | Description | Type | Required |
 | --- | --- | --- | --- |
 | `customer` | The mobile number of the client who will pay | `string` | Yes |
@@ -145,7 +151,32 @@ payment = vpos.new_payment(customer: '900111222', amount: '123.45', token: 'EbRT
 Given an existing `parent_transaction_id`, request a refund using a env variable token.
 
 ```ruby
-refund = vpos.new_refund(parent_transaction_id: '1kTFGhJH8i58uD9MdJpMjWnoE')
+# Using a env variable token
+request = vpos.new_refund(parent_transaction_id: '29fTRtkFaf8cQklRuHTvGDaecj4')
+# Or using a explicit token
+request = vpos.new_refund(parent_transaction_id: '29fTRtkFaf8cQklRuHTvGDaecj4', token: 'EbRTIbb1jHbXEbRTIbbwaoJ6w06nLcRG7X')
+# {:status_code=>202, :message=>"ACCEPTED", :location=>"/api/v1/requests/29fTRtkFaf8cQklRuHTvGDaecj3"}
+
+request_id = vpos.get_request_id(request)
+# "29fTRtkFaf8cQklRuHTvGDaecj3"
+
+transaction = vpos.get_transaction(transaction_id: "29fTRtkFaf8cQklRuHTvGDaecj3")
+# {
+#   :status_code=>200,
+#   :message=>"OK",
+#   :data=> {
+#      :amount=>"1.23",
+#      :clearing_period=>156,
+#      :id=>"29fTRtkFaf8cQklRuHTvGDaecj3",
+#      :mobile=>nil,
+#      :parent_transaction_id=>29fTRtkFaf8cQklRuHTvGDaecj4,
+#      :pos_id=>nil,
+#      :status=>"accepted",
+#      :status_datetime=>"2022-05-25T18:25:39Z",
+#      :status_reason=>nil,
+#      :type=>"refund"
+#    }
+# }
 ```
 
 or
@@ -153,7 +184,6 @@ or
 Using a explicitly stated token
 
 ```ruby
-refund = vpos.new_refund(parent_transaction_id: '1kTFGhJH8i58uD9MdJpMjWnoE', token: 'EbRTIbb1jHbXEbRTIbbwaoJ6w06nLcRG7X')
 ```
 
 | Argument | Description | Type | Required |
