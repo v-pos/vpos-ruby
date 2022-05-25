@@ -92,7 +92,7 @@ transaction = merchant.get_transaction(transaction_id: '1jHbXEbRTIbbwaoJ6w06nLcR
 ```
 
 | Argument | Description | Type | Required |
-| --- | --- | --- |
+| --- | --- | --- | --- |
 | `transaction_id` | An existing Transaction ID | `string` | Yes |
 | `token` | Merchant token generated at vPOS merchant portal | `string` | No (if set as env variable) |
 
@@ -113,7 +113,7 @@ payment = merchant.new_payment(customer: '900111222', amount: '123.45', token: '
 ```
 
 | Argument | Description | Type | Required |
-| --- | --- | --- |
+| --- | --- | --- | --- |
 | `customer` | The mobile number of the client who will pay | `string` | Yes |
 | `amount` | The amount the client should pay, eg. "259.99", "259000.00" | `string` | Yes |
 | `token` | Merchant token generated at vPOS merchant portal | `string` | No (if set as env variable) |
@@ -135,7 +135,7 @@ refund = merchant.new_refund(parent_transaction_id: '1kTFGhJH8i58uD9MdJpMjWnoE',
 ```
 
 | Argument | Description | Type | Required |
-| --- | --- | --- |
+| --- | --- | --- | --- |
 | `parent_transaction_id` | The ID of transaction you wish to refund | `string`
 | `token` | Merchant token generated at vPOS merchant portal | `string` | No (if set as env variable) |
 | `callback_url` | A valid https url where vPOS is going to callback as soon he finishes to process | `string` | No |
@@ -158,7 +158,7 @@ transaction = merchant.get_request(request_id: '1jHbXEbRTIbbwaoJ6w06nLcRG7X', to
 ```
 
 | Argument | Description | Type | Required? |
-| --- | --- | --- |
+| --- | --- | --- | --- |
 | `request_id` | The ID of transaction you wish to poll | `string` | Yes |
 | `token` | Merchant token generated at vPOS merchant portal | `string` | No (if set as env variable) |
 
