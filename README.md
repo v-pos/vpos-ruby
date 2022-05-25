@@ -73,57 +73,94 @@ or using one of the optional arguments
 | --- | --- | --- |
 | `token` | Token generated at [vPOS](https://merchant.vpos.ao) dashboard | `string`
 | `pos_id` | Merchant POS ID provided by EMIS | `string`
-| `supervisor_card` | Merchant Supervisor Card number provided by EMIS | `string`
 | `payment_callback_url` | Merchant application JSON endpoint to accept the callback payment response | `string`
 | `refund_callback_url` | Merchant application JSON endpoint to accept the callback refund response | `string`
 
 ### Get a specific Transaction
-Retrieves a transaction given a valid transaction ID.
+Retrieves a transaction given a valid transaction ID using a env variable token.
 
 ```ruby
-transaction = merchant.get_transaction('1jHbXEbRTIbbwaoJ6w06nLcRG7X')
+transaction = merchant.get_transaction(transaction_id: '1jHbXEbRTIbbwaoJ6w06nLcRG7X')
 ```
 
-| Argument | Description | Type |
+or
+
+Using a explicitly stated token
+
+```ruby
+transaction = merchant.get_transaction(transaction_id: '1jHbXEbRTIbbwaoJ6w06nLcRG7X', token: 'EbRTIbb1jHbXEbRTIbbwaoJ6w06nLcRG7X')
+```
+
+| Argument | Description | Type | Required |
 | --- | --- | --- |
-| `id` | An existing Transaction ID | `string`
+| `transaction_id` | An existing Transaction ID | `string` | Yes |
+| `token` | Merchant token generated at vPOS merchant portal | `string` | No (if set as env variable) |
 
 ### New Payment Transaction
 Creates a new payment transaction given a valid mobile number associated with a `MULTICAIXA` account
-and a valid amount.
+and a valid amount using a env variable token.
 
 ```ruby
-payment = merchant.new_payment('900111222', '123.45')
+payment = merchant.new_payment(customer: '900111222', amount: '123.45')
 ```
 
-| Argument | Description | Type |
+or
+
+Using a explicitly stated token
+
+```ruby
+payment = merchant.new_payment(customer: '900111222', amount: '123.45', token: 'EbRTIbb1jHbXEbRTIbbwaoJ6w06nLcRG7X')
+```
+
+| Argument | Description | Type | Required |
 | --- | --- | --- |
-| `mobile` | The mobile number of the client who will pay | `string`
-| `amount` | The amount the client should pay, eg. "259.99", "259000.00" | `string`
+| `customer` | The mobile number of the client who will pay | `string` | Yes |
+| `amount` | The amount the client should pay, eg. "259.99", "259000.00" | `string` | Yes |
+| `token` | Merchant token generated at vPOS merchant portal | `string` | No (if set as env variable) |
+| `callback_url` | A valid https url where vPOS is going to callback as soon he finishes to process | `string` | No |
 
 ### Request Refund
-Given an existing `parent_transaction_id`, request a refund.
+Given an existing `parent_transaction_id`, request a refund using a env variable token.
 
 ```ruby
-refund = merchant.new_refund('1kTFGhJH8i58uD9MdJpMjWnoE')
+refund = merchant.new_refund(parent_transaction_id: '1kTFGhJH8i58uD9MdJpMjWnoE')
 ```
 
-| Argument | Description | Type |
+or
+
+Using a explicitly stated token
+
+```ruby
+refund = merchant.new_refund(parent_transaction_id: '1kTFGhJH8i58uD9MdJpMjWnoE', token: 'EbRTIbb1jHbXEbRTIbbwaoJ6w06nLcRG7X')
+```
+
+| Argument | Description | Type | Required |
 | --- | --- | --- |
 | `parent_transaction_id` | The ID of transaction you wish to refund | `string`
+| `token` | Merchant token generated at vPOS merchant portal | `string` | No (if set as env variable) |
+| `callback_url` | A valid https url where vPOS is going to callback as soon he finishes to process | `string` | No |
 
 ### Poll Transaction Status
-Poll the status of a transaction given a valid `request_id`. 
+Poll the status of a transaction given a valid `request_id` using a env variable token. 
 
 Note: The `request_id` in this context is essentially the `transaction_id` of an existing request. 
 
 ```ruby
-transaction = merchant.get_request('1jHbXEbRTIbbwaoJ6w06nLcRG7X')
+transaction = merchant.get_request(request_id: '1jHbXEbRTIbbwaoJ6w06nLcRG7X')
 ```
 
-| Argument | Description | Type |
+or
+
+Using a explicitly stated token
+
+```ruby
+transaction = merchant.get_request(request_id: '1jHbXEbRTIbbwaoJ6w06nLcRG7X', token: 'EbRTIbb1jHbXEbRTIbbwaoJ6w06nLcRG7X')
+```
+
+| Argument | Description | Type | Required? |
 | --- | --- | --- |
-| `request_id` | The ID of transaction you wish to poll | `string`
+| `request_id` | The ID of transaction you wish to poll | `string` | Yes |
+| `token` | Merchant token generated at vPOS merchant portal | `string` | No (if set as env variable) |
 
 ### Have any doubts?
 In case of any doubts, bugs, or the like, please leave an issue. We would love to help.
