@@ -80,7 +80,27 @@ or using one of the optional arguments
 Retrieves a transaction given a valid transaction ID using a env variable token.
 
 ```ruby
-transaction = merchant.get_transaction(transaction_id: '1jHbXEbRTIbbwaoJ6w06nLcRG7X')
+request = vpos.get_transaction(transaction_id: '1jHbXEbRTIbbwaoJ6w06nLcRG7X')
+#=> {:status_code=>202, :message=>"ACCEPTED", :location=>"/api/v1/requests/29fTRtkFaf8cQklRuHTvGDaecj4"}
+
+request_id = vpos.get_request_id(request)
+#=> "29fTRtkFaf8cQklRuHTvGDaecj4"
+
+transaction = vpos.get_transaction(transaction_id: "29fTRtkFaf8cQklRuHTvGDaecj4")
+#=> {:status_code=>200,
+     :message=>"OK",
+     :data=> {
+       :amount=>"1.23",
+       :clearing_period=>156,
+       :id=>"29fTRtkFaf8cQklRuHTvGDaecj4",
+       :mobile=>"900000000",
+       :parent_transaction_id=>nil,
+       :pos_id=>111,
+       :status=>"accepted",
+       :status_datetime=>"2022-05-25T18:25:39Z",
+       :status_reason=>nil,
+       :type=>"payment"
+     }
 ```
 
 or
@@ -88,7 +108,7 @@ or
 Using a explicitly stated token
 
 ```ruby
-transaction = merchant.get_transaction(transaction_id: '1jHbXEbRTIbbwaoJ6w06nLcRG7X', token: 'EbRTIbb1jHbXEbRTIbbwaoJ6w06nLcRG7X')
+request = vpos.get_transaction(transaction_id: '1jHbXEbRTIbbwaoJ6w06nLcRG7X', token: 'EbRTIbb1jHbXEbRTIbbwaoJ6w06nLcRG7X')
 ```
 
 | Argument | Description | Type | Required |
@@ -101,7 +121,7 @@ Creates a new payment transaction given a valid mobile number associated with a 
 and a valid amount using a env variable token.
 
 ```ruby
-payment = merchant.new_payment(customer: '900111222', amount: '123.45')
+payment = vpos.new_payment(customer: '900111222', amount: '123.45')
 ```
 
 or
@@ -109,7 +129,7 @@ or
 Using a explicitly stated token
 
 ```ruby
-payment = merchant.new_payment(customer: '900111222', amount: '123.45', token: 'EbRTIbb1jHbXEbRTIbbwaoJ6w06nLcRG7X')
+payment = vpos.new_payment(customer: '900111222', amount: '123.45', token: 'EbRTIbb1jHbXEbRTIbbwaoJ6w06nLcRG7X')
 ```
 
 | Argument | Description | Type | Required |
@@ -123,7 +143,7 @@ payment = merchant.new_payment(customer: '900111222', amount: '123.45', token: '
 Given an existing `parent_transaction_id`, request a refund using a env variable token.
 
 ```ruby
-refund = merchant.new_refund(parent_transaction_id: '1kTFGhJH8i58uD9MdJpMjWnoE')
+refund = vpos.new_refund(parent_transaction_id: '1kTFGhJH8i58uD9MdJpMjWnoE')
 ```
 
 or
@@ -131,7 +151,7 @@ or
 Using a explicitly stated token
 
 ```ruby
-refund = merchant.new_refund(parent_transaction_id: '1kTFGhJH8i58uD9MdJpMjWnoE', token: 'EbRTIbb1jHbXEbRTIbbwaoJ6w06nLcRG7X')
+refund = vpos.new_refund(parent_transaction_id: '1kTFGhJH8i58uD9MdJpMjWnoE', token: 'EbRTIbb1jHbXEbRTIbbwaoJ6w06nLcRG7X')
 ```
 
 | Argument | Description | Type | Required |
@@ -146,7 +166,7 @@ Poll the status of a transaction given a valid `request_id` using a env variable
 Note: The `request_id` in this context is essentially the `transaction_id` of an existing request. 
 
 ```ruby
-transaction = merchant.get_request(request_id: '1jHbXEbRTIbbwaoJ6w06nLcRG7X')
+transaction = vpos.get_request(request_id: '1jHbXEbRTIbbwaoJ6w06nLcRG7X')
 ```
 
 or
@@ -154,7 +174,7 @@ or
 Using a explicitly stated token
 
 ```ruby
-transaction = merchant.get_request(request_id: '1jHbXEbRTIbbwaoJ6w06nLcRG7X', token: 'EbRTIbb1jHbXEbRTIbbwaoJ6w06nLcRG7X')
+transaction = vpos.get_request(request_id: '1jHbXEbRTIbbwaoJ6w06nLcRG7X', token: 'EbRTIbb1jHbXEbRTIbbwaoJ6w06nLcRG7X')
 ```
 
 | Argument | Description | Type | Required? |
