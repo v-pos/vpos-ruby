@@ -70,6 +70,8 @@ module VposModule
         return { status_code: response.status, message: 'CREATED', data: response.body }
       when 202, 303
         return { status_code: response.status, message: 'ACCEPTED', location: response.headers["location"]}
+      when 401
+        return { status_code: response.status, message: 'UNAUTHORIZED' }
       when 404
         return { status_code: response.status, message: 'NOT FOUND' }
       else
