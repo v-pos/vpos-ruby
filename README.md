@@ -23,7 +23,7 @@ See our documentation on [developer.vpos.ao](https://developer.vpos.ao)
 
 ## Installation
 ```ruby
-gem 'vpos', '~> 1.0.4'
+gem 'vpos', '~> 2.0.0'
 ```
 
 or 
@@ -52,10 +52,10 @@ The next section will show the various actions that can be performed by you, the
 require 'vpos'
 
 # use the default environment variables option
-merchant = Vpos.new
+vpos = Vpos.new
 
 # or use optional arguments option
-merchant = Vpos.new(token: 'your_token_here', environment: 'PRD')
+vpos = Vpos.new(token: 'your_token_here')
 ```
 
 #### Environment variables

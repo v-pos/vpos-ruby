@@ -1,5 +1,6 @@
 require "vpos/version"
 require "faraday"
+require "json"
 require "securerandom"
 
 module VposModule
@@ -20,13 +21,13 @@ module VposModule
     return_vpos_object(response)
   end
 
-  def new_refund(parent_transaction_id: required, callback_url: @refund_callback_url)
+  def new_refund(parent_transaction_id: required, token: @token, callback_url: @refund_callback_url)
     conn = connection
     response = conn.post('transactions') do |req|
       req.headers['Authorization'] = token
       req.body = { type: "refund", parent_transaction_id: parent_transaction_id, callback_url: callback_url }.to_json
     end
-    return_vpos_object(request)
+    return_vpos_object(response)
   end
 
   def get_transaction(transaction_id: required, token: @token)
@@ -52,12 +53,12 @@ module VposModule
     end
   end
 
-  def get_request(request_id)
+  def get_request(request_id: request_id, token: @token)
     conn = connection
     response = conn.get("requests/#{request_id}") do |req|
       req.headers['Authorization'] = token
     end
-    return_vpos_object(request)
+    return_vpos_object(response)
   end
 
   private
@@ -69,8 +70,10 @@ module VposModule
         return { status_code: response.status, message: 'CREATED', data: response.body }
       when 202, 303
         return { status_code: response.status, message: 'ACCEPTED', location: response.headers["location"]}
+      when 404
+        return { status_code: response.status, message: 'NOT FOUND' }
       else
-        return { status_code: response.status, message: response.status, details: response.body }
+        return { status_code: response.status, message: response.status, details: JSON.parse(response.body).transform_keys(&:to_sym) }
       end
     end
 
@@ -91,9 +94,7 @@ module VposModule
         url: host,
         params: params,
         headers: set_headers
-      ) do |faraday|
-        faraday.response :logger
-      end
+      )
     end
 
     def required
