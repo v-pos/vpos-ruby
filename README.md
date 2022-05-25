@@ -80,9 +80,9 @@ or using one of the optional arguments
 Retrieves a transaction given a valid transaction ID:
 
 ```ruby
-# Using a env variable token
+# Using a env variable token MERCHANT_VPOS_TOKEN
 transaction = vpos.get_transaction(transaction_id: '1jHbXEbRTIbbwaoJ6w06nLcRG7X')
-# Or using a explicit token
+# Or using a explicitly stated token
 transaction = vpos.get_transaction(transaction_id: '1jHbXEbRTIbbwaoJ6w06nLcRG7X', token: 'EbRTIbb1jHbXEbRTIbbwaoJ6w06nLcRG7X')
 # {
 #   :status_code=>200,
@@ -112,9 +112,9 @@ Creates a new payment transaction given a valid mobile number associated with a 
 and a valid amount:
 
 ```ruby
-# Using a env variable token
+# Using a env variable token MERCHANT_VPOS_TOKEN
 request = vpos.new_payment(customer: '900111222', amount: '123.45')
-# Or using a explicit token
+# Or using a explicitly stated token
 request = vpos.new_payment(customer: '900111222', amount: '123.45', token: 'EbRTIbb1jHbXEbRTIbbwaoJ6w06nLcRG7X')
 # {:status_code=>202, :message=>"ACCEPTED", :location=>"/api/v1/requests/29fTRtkFaf8cQklRuHTvGDaecj4"}
 
@@ -151,9 +151,9 @@ transaction = vpos.get_transaction(transaction_id: "29fTRtkFaf8cQklRuHTvGDaecj4"
 Given an existing `parent_transaction_id`, request a refund using a env variable token.
 
 ```ruby
-# Using a env variable token
+# Using a env variable token MERCHANT_VPOS_TOKEN
 request = vpos.new_refund(parent_transaction_id: '29fTRtkFaf8cQklRuHTvGDaecj4')
-# Or using a explicit token
+# Or using a explicitly stated token
 request = vpos.new_refund(parent_transaction_id: '29fTRtkFaf8cQklRuHTvGDaecj4', token: 'EbRTIbb1jHbXEbRTIbbwaoJ6w06nLcRG7X')
 # {:status_code=>202, :message=>"ACCEPTED", :location=>"/api/v1/requests/29fTRtkFaf8cQklRuHTvGDaecj3"}
 
@@ -179,13 +179,6 @@ transaction = vpos.get_transaction(transaction_id: "29fTRtkFaf8cQklRuHTvGDaecj3"
 # }
 ```
 
-or
-
-Using a explicitly stated token
-
-```ruby
-```
-
 | Argument | Description | Type | Required |
 | --- | --- | --- | --- |
 | `parent_transaction_id` | The ID of transaction you wish to refund | `string`
@@ -193,20 +186,37 @@ Using a explicitly stated token
 | `callback_url` | A valid https url where vPOS is going to callback as soon he finishes to process | `string` | No |
 
 ### Poll Transaction Status
-Poll the status of a transaction given a valid `request_id` using a env variable token. 
+Poll the status of a transaction given a valid `request_id`
 
 Note: The `request_id` in this context is essentially the `transaction_id` of an existing request. 
 
 ```ruby
-transaction = vpos.get_request(request_id: '1jHbXEbRTIbbwaoJ6w06nLcRG7X')
-```
+# Using a env variable token
+request = vpos.get_request(request_id: '29fTRtkFaf8cQklRuHTvGDaecj5')
+# Or using a explicitly stated token
+request = vpos.get_request(request_id: '29fTRtkFaf8cQklRuHTvGDaecj5', token: 'EbRTIbb1jHbXEbRTIbbwaoJ6w06nLcRG7X')
+# {:status_code=>303, :message=>"ACCEPTED", :location=>"/api/v1/transactions/29fTRtkFaf8cQklRuHTvGDaecj5"}
 
-or
+request_id = vpos.get_request_id(request)
+# "29fTRtkFaf8cQklRuHTvGDaecj5"
 
-Using a explicitly stated token
-
-```ruby
-transaction = vpos.get_request(request_id: '1jHbXEbRTIbbwaoJ6w06nLcRG7X', token: 'EbRTIbb1jHbXEbRTIbbwaoJ6w06nLcRG7X')
+transaction = vpos.get_transaction(transaction_id: "29fTRtkFaf8cQklRuHTvGDaecj5")
+# {
+#   :status_code=>200,
+#   :message=>"OK",
+#   :data=> {
+#      :amount=>"1.23",
+#      :clearing_period=>156,
+#      :id=>"29fTRtkFaf8cQklRuHTvGDaecj5",
+#      :mobile=>nil,
+#      :parent_transaction_id=>29fTRtkFaf8cQklRuHTvGDaecj4,
+#      :pos_id=>nil,
+#      :status=>"accepted",
+#      :status_datetime=>"2022-05-25T18:25:39Z",
+#      :status_reason=>nil,
+#      :type=>"refund"
+#    }
+# }
 ```
 
 | Argument | Description | Type | Required? |
