@@ -24,6 +24,6 @@ Gem::Specification.new do |spec|
 
   spec.add_development_dependency 'bundler', '~> 2.2', '>= 2.2.3'
   spec.add_development_dependency 'rake', '~> 12.3', '>= 12.3.3'
-  spec.add_dependency 'httparty', '~> 0.18.1'
+  spec.add_dependency 'faraday', '~> 2.3'
   spec.add_dependency 'rspec', '~> 3.11', ">= 3.11.0"
 end

@@ -1,34 +1,48 @@
 require "vpos/version"
-require "httparty"
+require "faraday"
 require "securerandom"
 
 module VposModule
   class Error < StandardError; end
-  include HTTParty
-  follow_redirects false
 
-  def new_payment(customer, amount, pos_id: @pos_id, callback_url: @payment_callback_url)
-    content = set_headers
-    content[:body] = {type:"payment", pos_id: pos_id, mobile: customer, amount: amount, callback_url: callback_url}.to_json
-    request = HTTParty.post("#{host}/transactions", content)
+  def new_payment(
+    customer: required,
+    amount: required,
+    pos_id: @pos_id,
+    callback_url: @payment_callback_url,
+    token: @token
+  )
+    conn = connection
+    response = conn.post('transactions') do |req|
+      req.headers['Authorization'] = token
+      req.body = { type: "payment", pos_id: pos_id, mobile: customer, amount: amount, callback_url: callback_url }.to_json
+    end
+    return_vpos_object(response)
+  end
+
+  def new_refund(parent_transaction_id: required, callback_url: @refund_callback_url)
+    conn = connection
+    response = conn.post('transactions') do |req|
+      req.headers['Authorization'] = token
+      req.body = { type: "refund", parent_transaction_id: parent_transaction_id, callback_url: callback_url }.to_json
+    end
     return_vpos_object(request)
   end
 
-  def new_refund(transaction_id, supervisor_card: @supervisor_card, callback_url: @refund_callback_url)
-    content = set_headers
-    content[:body] = {type: "refund", parent_transaction_id: transaction_id, supervisor_card: supervisor_card, callback_url: callback_url}.to_json
-    request = HTTParty.post("#{host}/transactions", content)
-    return_vpos_object(request)
-  end
-
-  def get_transaction(transaction_id)
-    request = HTTParty.get("#{host}/transactions/#{transaction_id}", set_headers)
-    return_vpos_object(request)
+  def get_transaction(transaction_id: required, token: @token)
+    conn = connection
+    response = conn.get("transactions/#{transaction_id}") do |req|
+      req.headers['Authorization'] = token
+    end
+    return_vpos_object(response)
   end
 
   def get_request_id(response)
     if response[:location].nil?
-      HTTParty.get("#{host}/references/invalid", set_headers)
+      conn = connection
+      response = conn.get("references/invalid") do |req|
+        req.headers['Authorization'] = token
+      end
     else
       if response[:status_code] == 202
         response[:location].gsub("/api/v1/requests/", "")
@@ -39,30 +53,52 @@ module VposModule
   end
 
   def get_request(request_id)
-    request = HTTParty.get("#{host}/requests/#{request_id}", set_headers)
+    conn = connection
+    response = conn.get("requests/#{request_id}") do |req|
+      req.headers['Authorization'] = token
+    end
     return_vpos_object(request)
   end
 
   private
-    def return_vpos_object(request)
-      case request.response.code.to_i
-      when 200, 201
-        return {status_code: request.response.code.to_i, message: request.response.message, data: request.parsed_response}
+    def return_vpos_object(response)
+      case response.status
+      when 200
+        return { status_code: response.status, message: 'OK', data: JSON.parse(response.body).transform_keys(&:to_sym) }
+      when 201
+        return { status_code: response.status, message: 'CREATED', data: response.body }
       when 202, 303
-        return {status_code: request.response.code.to_i, message: request.response.message, location: request.headers["location"]}
+        return { status_code: response.status, message: 'ACCEPTED', location: response.headers["location"]}
       else
-        return {status_code: request.response.code.to_i, message: request.response.message, details: request.parsed_response["errors"]}
+        return { status_code: response.status, message: response.status, details: response.body }
       end
     end
 
     def set_headers
-      content = {}
-      headers = {'Content-Type' => "application/json", 'Accept' => "application/json", 'Authorization' => @token, 'Idempotency-Key' => SecureRandom.uuid}
-      content[:headers] = headers
-      content
+      headers = {'Content-Type' => "application/json", 'Accept' => "application/json", 'Idempotency-Key' => SecureRandom.uuid}
     end
 
     def host
       "https://vpos.ao/api/v1"
+    end
+
+    def params
+      params = {}
+    end
+
+    def connection
+      conn = Faraday.new(
+        url: host,
+        params: params,
+        headers: set_headers
+      ) do |faraday|
+        faraday.response :logger
+      end
+    end
+
+    def required
+      method = caller_locations(1,1)[0].label
+      raise ArgumentError,
+        "A required keyword argument was not specified when calling '#{method}'"
     end
 end
