@@ -87,9 +87,10 @@ request_id = vpos.get_request_id(request)
 # "29fTRtkFaf8cQklRuHTvGDaecj4"
 
 transaction = vpos.get_transaction(transaction_id: "29fTRtkFaf8cQklRuHTvGDaecj4")
-# {:status_code=>200,
-#    :message=>"OK",
-#    :data=> {
+# {
+#   :status_code=>200,
+#   :message=>"OK",
+#   :data=> {
 #      :amount=>"1.23",
 #      :clearing_period=>156,
 #      :id=>"29fTRtkFaf8cQklRuHTvGDaecj4",
@@ -101,6 +102,7 @@ transaction = vpos.get_transaction(transaction_id: "29fTRtkFaf8cQklRuHTvGDaecj4"
 #      :status_reason=>nil,
 #      :type=>"payment"
 #    }
+# }
 ```
 
 or
