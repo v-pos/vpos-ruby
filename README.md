@@ -37,6 +37,7 @@ This ruby library requires you to have:
 - POS_ID provided by EMIS that can be requested through your support bank.
 - Supervisor Card provided by EMIS that can be requested through your support bank.
 - Token provided by vPOS that can be generated through vPOS [merchant](https://merchant.vpos.ao) portal.
+- Ruby 2.6 or higher
 
 Don't have this information? [Talk to us](suporte@vpos.ao)
 
