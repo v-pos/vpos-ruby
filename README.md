@@ -62,7 +62,6 @@ vpos = Vpos.new(token: 'your_token_here')
 | Variable | Description | Required |
 | --- | --- | --- |
 | `GPO_POS_ID` | The Point of Sale ID provided by EMIS | true |
-| `GPO_SUPERVISOR_CARD` | The Supervisor card ID provided by EMIS | true |
 | `MERCHANT_VPOS_TOKEN` | The API token provided by vPOS | true |
 | `PAYMENT_CALLBACK_URL` | The URL that will handle payment notifications | false |
 | `REFUND_CALLBACK_URL` | The URL that will handle refund notifications | false |

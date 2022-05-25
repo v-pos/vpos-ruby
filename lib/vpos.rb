@@ -3,10 +3,9 @@ require_relative "vpos_module"
 class Vpos
   include VposModule
 
-  def initialize(token: set_token, pos_id: default_pos_id, supervisor_card: default_supervisor_card, payment_callback_url: default_payment_callback_url, refund_callback_url: default_refund_callback_url)
+  def initialize(token: set_token, pos_id: default_pos_id, payment_callback_url: default_payment_callback_url, refund_callback_url: default_refund_callback_url)
     @token = token
     @pos_id = pos_id
-    @supervisor_card = supervisor_card
     @payment_callback_url = payment_callback_url
     @refund_callback_url = refund_callback_url
   end
@@ -18,11 +17,6 @@ class Vpos
         return 111
       end
       "#{pos_id}".to_i
-    end
-
-    def default_supervisor_card
-      supervisor_card = ENV['GPO_SUPERVISOR_CARD']
-      "#{supervisor_card}"
     end
 
     def set_token
