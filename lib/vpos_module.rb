@@ -15,7 +15,7 @@ module VposModule
   )
     conn = connection
     response = conn.post('transactions') do |req|
-      req.headers['Authorization'] = token
+      req.headers['Authorization'] = "Bearer #{token}"
       req.body = { type: "payment", pos_id: pos_id, mobile: customer, amount: amount, callback_url: callback_url }.to_json
     end
     return_vpos_object(response)
@@ -24,7 +24,7 @@ module VposModule
   def new_refund(parent_transaction_id: required, token: @token, callback_url: @refund_callback_url)
     conn = connection
     response = conn.post('transactions') do |req|
-      req.headers['Authorization'] = token
+      req.headers['Authorization'] = "Bearer #{token}"
       req.body = { type: "refund", parent_transaction_id: parent_transaction_id, callback_url: callback_url }.to_json
     end
     return_vpos_object(response)
@@ -33,7 +33,7 @@ module VposModule
   def get_transaction(transaction_id: required, token: @token)
     conn = connection
     response = conn.get("transactions/#{transaction_id}") do |req|
-      req.headers['Authorization'] = token
+      req.headers['Authorization'] = "Bearer #{token}"
     end
     return_vpos_object(response)
   end
@@ -42,7 +42,7 @@ module VposModule
     if response[:location].nil?
       conn = connection
       response = conn.get("references/invalid") do |req|
-        req.headers['Authorization'] = token
+        req.headers['Authorization'] = "Bearer #{token}"
       end
     else
       if response[:status_code] == 202
@@ -56,7 +56,7 @@ module VposModule
   def get_request(request_id: required, token: @token)
     conn = connection
     response = conn.get("requests/#{request_id}") do |req|
-      req.headers['Authorization'] = token
+      req.headers['Authorization'] = "Bearer #{token}"
     end
     return_vpos_object(response)
   end
