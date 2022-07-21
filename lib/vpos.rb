@@ -21,7 +21,7 @@ class Vpos
 
     def set_token
       token = ENV['MERCHANT_VPOS_TOKEN']
-      "Bearer #{token}"
+      "#{token}"
     end
 
     def default_payment_callback_url
